@@ -1,0 +1,19 @@
+<html>
+<head>
+<script type='text/javascript' src='crosspuzzle.js'></script>
+</head>
+<body style='background-color:#FFA366;margin:0px'>
+<div style='width:800px;margin:auto;background-color:white;margin-top:0;padding:15px'>
+<h1>Crosspuzzle</h1>
+<p>Here's an example crossword, made interactive using <a href='https://github.com/mscroggs/crosspuzzle'>crosspuzzle</a>.</p>
+<div id='crossword1'></div>
+<script type='text/javascript'>
+crosspuzzle("crossword1", {
+    "grid": ["*SUM*", "SENOR", "IV*DG", "NEPAL", "*NIL*"],
+    "clues": {"across": ["Add up.", "Spanish mister.", "Roman four.", "Non-continuous finite element.", "Country with non-rectangular flag.", "Footballer's zero."],
+              "down": ["English sept.", "French one.", "Most common", "opp &div; hyp.", "Rugeley Trent Valley.", "Greek p."]}
+})
+</script>
+</div>
+</body>
+</html>
