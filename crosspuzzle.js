@@ -1,24 +1,73 @@
-var active_cell = [null, null]
+var crosspuzzle_active_cell = [null, [null, null], "a"]
+var crosspuzzle_all_white_cells = {}
+var crosspuzzle_entered = {}
+var crosspuzzle_sizes = {}
+var crosspuzzle_letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-function is_white(entry) {
+function crosspuzzle_is_white(id, entry) {
+    for (i in crosspuzzle_all_white_cells[id]) {
+        if (crosspuzzle_all_white_cells[id][i][0] == entry[0] && crosspuzzle_all_white_cells[id][i][1] == entry[1]) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function crosspuzzle_entry_is_white(entry) {
     if (entry == "*" || entry == "-") {
         return false;
     }
     return true;
 }
 
-function is_black(entry) {
+function crosspuzzle_entry_is_black(entry) {
     return entry == "*"
 }
 
-function click_cell(row, col) {
-    var cell = document.getElementById("crosspuzzle-cell-" + row + "-" + col)
-    cell.style.backgroundColor = "#FFA366"
+function crosspuzzle_update_cell_styling(id) {
+    for (i in crosspuzzle_all_white_cells[id]) {
+        var cell = document.getElementById("crosspuzzle-" + id + "-cell-" + crosspuzzle_all_white_cells[id][i][0] + "-" + crosspuzzle_all_white_cells[id][i][1])
+        if (
+            crosspuzzle_active_cell[0] == id &&
+            crosspuzzle_all_white_cells[id][i][0] == crosspuzzle_active_cell[1][0] &&
+            crosspuzzle_all_white_cells[id][i][1] == crosspuzzle_active_cell[1][1]
+        ) {
+            cell.style.backgroundColor = "red"
+        } else if (
+            crosspuzzle_active_cell[0] == id && (
+            (crosspuzzle_active_cell[2] == "a" && crosspuzzle_all_white_cells[id][i][0] == crosspuzzle_active_cell[1][0]) ||
+            (crosspuzzle_active_cell[2] == "d" && crosspuzzle_all_white_cells[id][i][1] == crosspuzzle_active_cell[1][1])
+            )
+        ) {
+            // TODO: if part of same clue
+            cell.style.backgroundColor = "pink"
+        } else {
+            cell.style.backgroundColor = "white"
+        }
+    }
+}
+
+function crosspuzzle_click_cell(id, row, col) {
+    if (crosspuzzle_active_cell[0] != id) {
+        crosspuzzle_active_cell = [id, [null, null], "a"]
+    }
+    if (crosspuzzle_active_cell[1][0] == row && crosspuzzle_active_cell[1][1] == col) {
+        if (crosspuzzle_active_cell[2] == "a") {
+            crosspuzzle_active_cell[2] = "d"
+        } else {
+            crosspuzzle_active_cell[2] = "a"
+        }
+    } else {
+        crosspuzzle_active_cell[1] = [row, col]
+    }
+    crosspuzzle_update_cell_styling(id)
 }
 
 function crosspuzzle(id, data) {
     var c = document.getElementById(id);
     var content = "";
+    crosspuzzle_all_white_cells[id] = []
+    crosspuzzle_entered[id] = {}
 
     // grid
     if(!("grid" in data)) {
@@ -41,39 +90,40 @@ function crosspuzzle(id, data) {
     var dlens = []
     var number_positions = {}
 
-    var size = [g.length, g[0].length]
+    crosspuzzle_sizes[id] = [g.length, g[0].length]
     var clue_n = 1;
 
-    content += "<div class='crosspuzzle-grid', style='display:grid;grid-template-rows:repeat(" + size[0] + ", 30px);grid-template-columns:1fr repeat(" + size[1] + ", 30px) 1fr'>"
-    for (var row = 0; row < size[0]; row++) {
-        if (g[row].length != size[1]) {
+    content += "<div class='crosspuzzle-grid', style='display:grid;grid-template-rows:repeat(" + crosspuzzle_sizes[id][0] + ", 30px);grid-template-columns:1fr repeat(" + crosspuzzle_sizes[id][1] + ", 30px) 1fr'>"
+    for (var row = 0; row < crosspuzzle_sizes[id][0]; row++) {
+        if (g[row].length != crosspuzzle_sizes[id][1]) {
             c.innerHTML = "<span style='color:red'>Error: grid rows non-equal lengths</span>"
             return
         }
-        for (var col = 0; col < size[1]; col++) {
+        for (var col = 0; col < crosspuzzle_sizes[id][1]; col++) {
             var increase = false
-            if(is_white(g[row][col]) && (col == 0 || !is_white(g[row][col-1])) && col + 1 < size[1] && is_white(g[row][col + 1])) {
+            if(crosspuzzle_entry_is_white(g[row][col]) && (col == 0 || !crosspuzzle_entry_is_white(g[row][col-1])) && col + 1 < crosspuzzle_sizes[id][1] && crosspuzzle_entry_is_white(g[row][col + 1])) {
                 astarts[astarts.length] = clue_n
                 var len = 0;
-                while (col + len < size[1] && is_white(g[row][col + len])) {
+                while (col + len < crosspuzzle_sizes[id][1] && crosspuzzle_entry_is_white(g[row][col + len])) {
                     len++;
                 }
                 alens[alens.length] = len;
                 increase = true
             }
-            if(is_white(g[row][col]) && (row == 0 || !is_white(g[row-1][col])) && row + 1 < size[0] && is_white(g[row+1][col])) {
+            if(crosspuzzle_entry_is_white(g[row][col]) && (row == 0 || !crosspuzzle_entry_is_white(g[row-1][col])) && row + 1 < crosspuzzle_sizes[id][0] && crosspuzzle_entry_is_white(g[row+1][col])) {
                 dstarts[dstarts.length] = clue_n
                 var len = 0;
-                while (row + len < size[0] && is_white(g[row + len][col])) {
+                while (row + len < crosspuzzle_sizes[id][0] && crosspuzzle_entry_is_white(g[row + len][col])) {
                     len++;
                 }
                 dlens[dlens.length] = len;
                 increase = true;
             }
-            if(is_white(g[row][col])) {
-                content += "<a id='crosspuzzle-cell-" + row + "-" + col + "' class='crosspuzzle-cell crosspuzzle-cell-white' style='grid-row:" + (row+1) + " / span 1;grid-column:" + (col+2) + " / span 1' "
-                content += "href='javascript:click_cell(" + row + ", " + col + ")'></a>"
-            } else if(is_black(g[row][col])) {
+            if(crosspuzzle_entry_is_white(g[row][col])) {
+                crosspuzzle_all_white_cells[id][crosspuzzle_all_white_cells[id].length] = [row, col]
+                content += "<a id='crosspuzzle-" + id + "-cell-" + row + "-" + col + "' class='crosspuzzle-cell crosspuzzle-cell-white' style='grid-row:" + (row+1) + " / span 1;grid-column:" + (col+2) + " / span 1' "
+                content += "href='javascript:crosspuzzle_click_cell(\"" + id + "\", " + row + ", " + col + ")'></a>"
+            } else if(crosspuzzle_entry_is_black(g[row][col])) {
                 content += "<div class='crosspuzzle-cell crosspuzzle-cell-black' style='background-color:black;grid-row:" + (row+1) + " / span 1;grid-column:" + (col+2) + " / span 1'>&nbsp;</div>"
             }
             if (increase) {
@@ -126,3 +176,121 @@ function crosspuzzle(id, data) {
 
     c.innerHTML = content
 }
+
+document.addEventListener("keydown", (e) => {
+    var id = crosspuzzle_active_cell[0]
+    if(id !== null) {
+        if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.code)) {
+            e.preventDefault();
+        }
+        if (e.code === "Escape") {
+            crosspuzzle_active_cell = [null, [null, null], "a"]
+            crosspuzzle_update_cell_styling(id)
+            return
+        }
+        if (crosspuzzle_active_cell[1][0] !== null) {
+            if (e.code === "ArrowUp") {
+                crosspuzzle_active_cell[2] = "d"
+                if (crosspuzzle_is_white(id, [crosspuzzle_active_cell[1][0] - 1, crosspuzzle_active_cell[1][1]])) {
+                    crosspuzzle_active_cell[1][0] -= 1
+                }
+                crosspuzzle_update_cell_styling(id)
+                return
+            }
+            if (e.code === "ArrowDown") {
+                crosspuzzle_active_cell[2] = "d"
+                if (crosspuzzle_is_white(id, [crosspuzzle_active_cell[1][0] + 1, crosspuzzle_active_cell[1][1]])) {
+                    crosspuzzle_active_cell[1][0] += 1
+                }
+                crosspuzzle_update_cell_styling(id)
+                return
+            }
+            if (e.code === "ArrowRight") {
+                crosspuzzle_active_cell[2] = "a"
+                if (crosspuzzle_is_white(id, [crosspuzzle_active_cell[1][0], crosspuzzle_active_cell[1][1] + 1])) {
+                    crosspuzzle_active_cell[1][1] += 1
+                }
+                crosspuzzle_update_cell_styling(id)
+                return
+            }
+            if (e.code === "ArrowLeft") {
+                crosspuzzle_active_cell[2] = "a"
+                if (crosspuzzle_is_white(id, [crosspuzzle_active_cell[1][0], crosspuzzle_active_cell[1][1] - 1])) {
+                    crosspuzzle_active_cell[1][1] -= 1
+                }
+                crosspuzzle_update_cell_styling(id)
+                return
+            }
+            for (i in crosspuzzle_letters) {
+                var c = crosspuzzle_letters[i]
+                if (e.code == "Key" + c) {
+                    crosspuzzle_entered[id][crosspuzzle_active_cell[1][0] * crosspuzzle_sizes[id][1] + crosspuzzle_active_cell[1][1]] = c
+                    document.getElementById("crosspuzzle-" + id + "-cell-" + crosspuzzle_active_cell[1][0] + "-" + crosspuzzle_active_cell[1][1]).innerHTML = c
+                    if (crosspuzzle_active_cell[2] == "a") {
+                        if (crosspuzzle_is_white(id, [crosspuzzle_active_cell[1][0], crosspuzzle_active_cell[1][1] + 1])) {
+                            crosspuzzle_active_cell[1][1] += 1
+                        } else {
+                            var r = crosspuzzle_active_cell[1][0]
+                            var c = crosspuzzle_active_cell[1][1] + 1
+                            while (!crosspuzzle_is_white(id, [r, c])) {
+                                c += 1
+                                if (c >= crosspuzzle_sizes[id][1]) {
+                                    c = 0
+                                    r += 1
+                                }
+                                if (r >= crosspuzzle_sizes[id][0]) {
+                                    crosspuzzle_active_cell[2] = "d"
+                                    crosspuzzle_active_cell[1] = [-1, 0]
+                                    break
+                                }
+                            }
+                            if (crosspuzzle_active_cell[2] != "d") {
+                                crosspuzzle_active_cell[1] = [r, c]
+                            }
+                        }
+                    }
+                    if (crosspuzzle_active_cell[2] == "d") {
+                        if (crosspuzzle_is_white(id, [crosspuzzle_active_cell[1][0] + 1, crosspuzzle_active_cell[1][1]])) {
+                            crosspuzzle_active_cell[1][0] += 1
+                        } else {
+                            var r = crosspuzzle_active_cell[1][0]
+                            var c = crosspuzzle_active_cell[1][1]
+                            while (crosspuzzle_is_white(id, [r-1, c])) {
+                                r -= 1
+                            }
+                            var first = true
+                            while (first || !crosspuzzle_is_white(id, [r, c]) || crosspuzzle_is_white(id, [r-1, c]) || !crosspuzzle_is_white(id, [r+1, c])) {
+                                first = false
+                                c += 1
+                                if (c >= crosspuzzle_sizes[id][1]) {
+                                    c = 0
+                                    r += 1
+                                }
+                                if (r >= crosspuzzle_sizes[id][0]) {
+                                    break
+                                }
+                            }
+                            if (crosspuzzle_is_white(id, [r, c]) && !crosspuzzle_is_white(id, [r-1, c]) && crosspuzzle_is_white(id, [r+1, c])) {
+                                crosspuzzle_active_cell[1] = [r, c]
+                            }
+                        }
+                        // TODO: else next clue
+                    }
+                    crosspuzzle_update_cell_styling(id)
+                    return
+                }
+            }
+        }
+/*
+        } else if (e.code === \"Backspace\") {
+            regex_solution[selected_cell[0]][selected_cell[1]] = \"\"
+            if (dir == \"v\" && selected_cell[0] > 0) {
+                select_regex_cell(selected_cell[0] - 1, selected_cell[1])
+            }
+            if (dir == \"h\" && selected_cell[1] > 0) {
+                select_regex_cell(selected_cell[0], selected_cell[1] - 1)
+            }
+            update_solution()
+*/
+    }
+})
