@@ -90,7 +90,7 @@ function crosspuzzle(id, data) {
     crosspuzzle_all_white_cells[id] = [];
     crosspuzzle_entered[id] = {};
     crosspuzzle_n_to_clue[id] = {};
-    crosspuzzle_clue_to_positions[id] = {"a": {}, "d": {}};
+    crosspuzzle_clue_to_positions[id] = {"a": [], "d": []};
 
     // grid
     if(!("grid" in data)) {
@@ -163,12 +163,12 @@ function crosspuzzle(id, data) {
                 content += "<div class='crosspuzzle-cell crosspuzzle-cell-black' style='grid-row:" + (row+1) + " / span 1;grid-column:" + (col+2) + " / span 1'>&nbsp;</div>";
             }
             if (increase) {
-                // number_positions[[row, col]] = clue_n
+                content += "<div class='crosspuzzle-clue-n-in-grid' style='grid-row:" + (row+1) + " / span 1;grid-column:" + (col+2) + " / span 1'>" + clue_n + "</div>";
                 clue_n++;
             }
         }
     }
-    content += "</div>"
+    content += "</div>";
 
     // clues
     if(!("clues" in data)) {
@@ -235,36 +235,32 @@ document.addEventListener("keydown", (e) => {
         }
         if (crosspuzzle_active_cell[1][0] !== null) {
             if (e.code === "ArrowUp") {
-                if (crosspuzzle_active_cell[2] == "a") {
-                    crosspuzzle_active_cell[2] = "d";
-                } else if (crosspuzzle_is_white(id, [crosspuzzle_active_cell[1][0] - 1, crosspuzzle_active_cell[1][1]])) {
+                crosspuzzle_active_cell[2] = "d";
+                if (crosspuzzle_is_white(id, [crosspuzzle_active_cell[1][0] - 1, crosspuzzle_active_cell[1][1]])) {
                     crosspuzzle_active_cell[1][0] -= 1;
                 }
                 crosspuzzle_update_cell_styling(id);
                 return;
             }
             if (e.code === "ArrowDown") {
-                if (crosspuzzle_active_cell[2] == "a") {
-                    crosspuzzle_active_cell[2] = "d";
-                } else if (crosspuzzle_is_white(id, [crosspuzzle_active_cell[1][0] + 1, crosspuzzle_active_cell[1][1]])) {
+                crosspuzzle_active_cell[2] = "d";
+                if (crosspuzzle_is_white(id, [crosspuzzle_active_cell[1][0] + 1, crosspuzzle_active_cell[1][1]])) {
                     crosspuzzle_active_cell[1][0] += 1;
                 }
                 crosspuzzle_update_cell_styling(id);
                 return;
             }
             if (e.code === "ArrowRight") {
-                if (crosspuzzle_active_cell[2] == "d") {
-                    crosspuzzle_active_cell[2] = "a";
-                } else if (crosspuzzle_is_white(id, [crosspuzzle_active_cell[1][0], crosspuzzle_active_cell[1][1] + 1])) {
+                crosspuzzle_active_cell[2] = "a";
+                if (crosspuzzle_is_white(id, [crosspuzzle_active_cell[1][0], crosspuzzle_active_cell[1][1] + 1])) {
                     crosspuzzle_active_cell[1][1] += 1;
                 }
                 crosspuzzle_update_cell_styling(id);
                 return;
             }
             if (e.code === "ArrowLeft") {
-                if (crosspuzzle_active_cell[2] == "d") {
-                    crosspuzzle_active_cell[2] = "a";
-                } else if (crosspuzzle_is_white(id, [crosspuzzle_active_cell[1][0], crosspuzzle_active_cell[1][1] - 1])) {
+                crosspuzzle_active_cell[2] = "a";
+                if (crosspuzzle_is_white(id, [crosspuzzle_active_cell[1][0], crosspuzzle_active_cell[1][1] - 1])) {
                     crosspuzzle_active_cell[1][1] -= 1;
                 }
                 crosspuzzle_update_cell_styling(id);
@@ -284,6 +280,23 @@ document.addEventListener("keydown", (e) => {
             if (e.code === "Delete") {
                 crosspuzzle_get_cell(id, crosspuzzle_active_cell[1]).innerHTML = "";
                 delete crosspuzzle_entered[id][crosspuzzle_n(id, crosspuzzle_active_cell[1])]
+                return;
+            }
+            if (e.code === "Enter") {
+                var active_clue = crosspuzzle_n_to_clue[id][crosspuzzle_n(id, crosspuzzle_active_cell[1])][crosspuzzle_active_cell[2]];
+                if (crosspuzzle_active_cell[2] == "a") {
+                    if (active_clue + 1 < crosspuzzle_clue_to_positions[id]["a"].length) {
+                        crosspuzzle_active_cell[1] = crosspuzzle_clue_to_positions[id]["a"][active_clue + 1][0];
+                    } else {
+                        crosspuzzle_active_cell[1] = crosspuzzle_clue_to_positions[id]["d"][0][0];
+                        crosspuzzle_active_cell[2] = "d";
+                    }
+                } else {
+                    if (active_clue + 1 < crosspuzzle_clue_to_positions[id]["d"].length) {
+                        crosspuzzle_active_cell[1] = crosspuzzle_clue_to_positions[id]["d"][active_clue + 1][0];
+                    }
+                }
+                crosspuzzle_update_cell_styling(id);
                 return;
             }
             for (i in crosspuzzle_letters) {

@@ -24,7 +24,7 @@ a.crosspuzzle-cell {
 }
 
 .crosspuzzle-cell.crosspuzzle-cell-white {
-    background-color:white;
+    background: white;
 }
 
 .crosspuzzle-cell.crosspuzzle-cell-white.crosspuzzle-cell-active {
@@ -48,4 +48,10 @@ a.crosspuzzle-cell {
     font-weight: bold;
     padding-top:30px;
     padding-bottom:5px;
+}
+
+.crosspuzzle-clue-n-in-grid {
+    pointer-events: none;
+    font-size:60%;
+    padding:1px;
 }
