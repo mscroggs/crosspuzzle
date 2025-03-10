@@ -44,6 +44,17 @@ function crosspuzzle_update_cell_styling(id) {
         var cell = crosspuzzle_get_cell(id, crosspuzzle_all_white_cells[id][i]);
         cell.className = "crosspuzzle-cell crosspuzzle-cell-white";
     }
+    for (var dn = 0; dn < 2; dn++) {
+        var d = ["a", "d"][dn];
+        for (i in crosspuzzle_clue_to_positions[id][d]) {
+            var clue_n = document.getElementById("crosspuzzle-clue-n-" + d + i);
+            clue_n.className = "crosspuzzle-clue-n";
+            var clue_text = document.getElementById("crosspuzzle-clue-text-" + d + i);
+            clue_text.className = "crosspuzzle-clue-text";
+            var clue_len = document.getElementById("crosspuzzle-clue-len-" + d + i);
+            clue_len.className = "crosspuzzle-clue-len";
+        }
+    }
     if (id == crosspuzzle_active_cell[0]) {
         var d = crosspuzzle_active_cell[2]
         var clue_n = crosspuzzle_n_to_clue[id][crosspuzzle_n(id, crosspuzzle_active_cell[1])][d];
@@ -53,6 +64,14 @@ function crosspuzzle_update_cell_styling(id) {
         }
         var cell = crosspuzzle_get_cell(id, crosspuzzle_active_cell[1]);
         cell.className = "crosspuzzle-cell crosspuzzle-cell-white crosspuzzle-cell-active";
+
+        var clue_n_ = document.getElementById("crosspuzzle-clue-n-" + d + clue_n);
+        clue_n_.className = "crosspuzzle-clue-n crosspuzzle-clue-active";
+        var clue_text = document.getElementById("crosspuzzle-clue-text-" + d + clue_n);
+        clue_text.className = "crosspuzzle-clue-text crosspuzzle-clue-active";
+        var clue_len = document.getElementById("crosspuzzle-clue-len-" + d + clue_n);
+        clue_len.className = "crosspuzzle-clue-len crosspuzzle-clue-active";
+
     }
 }
 
@@ -188,11 +207,11 @@ function crosspuzzle(id, data) {
     content += "display:grid;grid-template-columns:35px 1fr 35px;grid-teplate_rows:repeat(" + (astarts.length + 1) + ", auto)'>";
     content += "<div class='crosspuzzle-clue-title' style='grid-column:1 / span 3;grid-row:1 / span 1'>Across</div>";
     for (i in data["clues"]["across"]) {
-        content += "<div class='crosspuzzle-clue-n' style='grid-column:1 / span 1;grid-row:" + (i + 2) + " / span 1'>";
+        content += "<div class='crosspuzzle-clue-n' id='crosspuzzle-clue-n-a" + i + "' style='grid-column:1 / span 1;grid-row:" + (i + 2) + " / span 1'>";
         content += astarts[i] + "</div>";
-        content += "<div class='crosspuzzle-clue-text' style='grid-column:2 / span 1;grid-row:" + (i + 2) + " / span 1'>";
+        content += "<div class='crosspuzzle-clue-text' id='crosspuzzle-clue-text-a" + i + "' style='grid-column:2 / span 1;grid-row:" + (i + 2) + " / span 1'>";
         content += data["clues"]["across"][i] + "</div>";
-        content += "<div class='crosspuzzle-clue-len' style='grid-column:3 / span 1;grid-row:" + (i + 2) + " / span 1'>(";
+        content += "<div class='crosspuzzle-clue-len' id='crosspuzzle-clue-len-a" + i + "' style='grid-column:3 / span 1;grid-row:" + (i + 2) + " / span 1'>(";
         content += alens[i] + ")</div>";
     }
     content += "</div>";
@@ -201,11 +220,11 @@ function crosspuzzle(id, data) {
     content += "display:grid;grid-template-columns:35px 1fr 35px;grid-teplate_rows:repeat(" + (dstarts.length + 1) + ", auto)'>";
     content += "<div class='crosspuzzle-clue-title' style='grid-column:1 / span 3;grid-row:1 / span 1'>Down</div>";
     for (i in data["clues"]["down"]) {
-        content += "<div class='crosspuzzle-clue-n' style='grid-column:1 / span 1;grid-row:" + (i + 2) + " / span 1'>";
+        content += "<div class='crosspuzzle-clue-n' id='crosspuzzle-clue-n-d" + i + "' style='grid-column:1 / span 1;grid-row:" + (i + 2) + " / span 1'>";
         content += dstarts[i] + "</div>";
-        content += "<div class='crosspuzzle-clue-text' style='grid-column:2 / span 1;grid-row:" + (i + 2) + " / span 1'>";
+        content += "<div class='crosspuzzle-clue-text' id='crosspuzzle-clue-text-d" + i + "' style='grid-column:2 / span 1;grid-row:" + (i + 2) + " / span 1'>";
         content += data["clues"]["down"][i] + "</div>";
-        content += "<div class='crosspuzzle-clue-len' style='grid-column:3 / span 1;grid-row:" + (i + 2) + " / span 1'>(";
+        content += "<div class='crosspuzzle-clue-len' id='crosspuzzle-clue-len-d" + i + "' style='grid-column:3 / span 1;grid-row:" + (i + 2) + " / span 1'>(";
         content += dlens[i] + ")</div>";
     }
     content += "</div>";
@@ -358,16 +377,5 @@ document.addEventListener("keydown", (e) => {
                 }
             }
         }
-/*
-        } else if (e.code === \"Backspace\") {
-            regex_solution[selected_cell[0]][selected_cell[1]] = \"\"
-            if (dir == \"v\" && selected_cell[0] > 0) {
-                select_regex_cell(selected_cell[0] - 1, selected_cell[1])
-            }
-            if (dir == \"h\" && selected_cell[1] > 0) {
-                select_regex_cell(selected_cell[0], selected_cell[1] - 1)
-            }
-            update_solution()
-*/
     }
 });

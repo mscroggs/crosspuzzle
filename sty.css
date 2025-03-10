@@ -55,3 +55,7 @@ a.crosspuzzle-cell {
     font-size:60%;
     padding:1px;
 }
+
+.crosspuzzle-clue-active {
+    font-weight:bold;
+}
