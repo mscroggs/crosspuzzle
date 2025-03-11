@@ -39,6 +39,7 @@ function crosspuzzle_entry_is_black(entry) {
 
 function crosspuzzle_update_cell_styling(id) {
     for (var id2 in crosspuzzle_solution) {
+        document.getElementById("crosspuzzle-" + id2 + "-button-clear-this").disabled = true;
         document.getElementById("crosspuzzle-" + id2 + "-button-check-this").disabled = true;
         document.getElementById("crosspuzzle-" + id2 + "-button-reveal-this").disabled = true;
     }
@@ -58,6 +59,7 @@ function crosspuzzle_update_cell_styling(id) {
         }
     }
     if (id == crosspuzzle_active_cell[0]) {
+        document.getElementById("crosspuzzle-" + id + "-button-clear-this").disabled = false;
         document.getElementById("crosspuzzle-" + id + "-button-check-this").disabled = false;
         document.getElementById("crosspuzzle-" + id + "-button-reveal-this").disabled = false;
         var d = crosspuzzle_active_cell[2]
@@ -128,6 +130,35 @@ function crosspuzzle_click_cell(id, row, col) {
     crosspuzzle_update_cell_styling(id);
 }
 
+function crosspuzzle_clear_this(id) {
+    if (crosspuzzle_active_cell[0] == id) {
+        var active_clue = crosspuzzle_n_to_clue[id][crosspuzzle_n(id, crosspuzzle_active_cell[1])][crosspuzzle_active_cell[2]];
+        var positions = crosspuzzle_clue_to_positions[id][crosspuzzle_active_cell[2]][active_clue];
+        for (var p in positions) {
+            var pos = positions[p];
+            if (crosspuzzle_n(id, pos) in crosspuzzle_entered[id]) {
+                delete crosspuzzle_entered[id][crosspuzzle_n(id, pos)];
+                crosspuzzle_get_cell(id, pos).innerHTML = "";
+            }
+            if (crosspuzzle_n(id, pos) in crosspuzzle_checked[id]) {
+                delete crosspuzzle_checked[id][crosspuzzle_n(id, pos)];
+            }
+        }
+        crosspuzzle_update_cell_styling(id);
+    }
+}
+
+function crosspuzzle_clear_all(id) {
+    for (var i in crosspuzzle_entered[id]) {
+        crosspuzzle_get_cell(id, crosspuzzle_solution[id][i][0]).innerHTML = "";
+        delete crosspuzzle_entered[id][i];
+        if (i in crosspuzzle_checked[id]) {
+            delete crosspuzzle_checked[id][i];
+        }
+    }
+    crosspuzzle_update_cell_styling(id);
+}
+
 function crosspuzzle_check_this(id) {
     if (crosspuzzle_active_cell[0] == id) {
         var active_clue = crosspuzzle_n_to_clue[id][crosspuzzle_n(id, crosspuzzle_active_cell[1])][crosspuzzle_active_cell[2]];
@@ -144,6 +175,18 @@ function crosspuzzle_check_this(id) {
     }
 }
 
+function crosspuzzle_check_all(id) {
+    for (var i in crosspuzzle_solution[id]) {
+        var pos = crosspuzzle_solution[id][i][0];
+        var c = crosspuzzle_solution[id][i][1];
+        if (crosspuzzle_n(id, pos) in crosspuzzle_entered[id]) {
+            crosspuzzle_checked[id][crosspuzzle_n(id, pos)] = [crosspuzzle_entered[id][crosspuzzle_n(id, pos)], crosspuzzle_entered[id][crosspuzzle_n(id, pos)] == c];
+        }
+    }
+    crosspuzzle_active_cell = [null, [null, null], "a"];
+    crosspuzzle_update_cell_styling(id);
+}
+
 function crosspuzzle_reveal_this(id) {
     if (crosspuzzle_active_cell[0] == id) {
         var active_clue = crosspuzzle_n_to_clue[id][crosspuzzle_n(id, crosspuzzle_active_cell[1])][crosspuzzle_active_cell[2]];
@@ -158,18 +201,6 @@ function crosspuzzle_reveal_this(id) {
         crosspuzzle_active_cell = [null, [null, null], "a"];
         crosspuzzle_update_cell_styling(id);
     }
-}
-
-function crosspuzzle_check_all(id) {
-    for (var i in crosspuzzle_solution[id]) {
-        var pos = crosspuzzle_solution[id][i][0];
-        var c = crosspuzzle_solution[id][i][1];
-        if (crosspuzzle_n(id, pos) in crosspuzzle_entered[id]) {
-            crosspuzzle_checked[id][crosspuzzle_n(id, pos)] = [crosspuzzle_entered[id][crosspuzzle_n(id, pos)], crosspuzzle_entered[id][crosspuzzle_n(id, pos)] == c];
-        }
-    }
-    crosspuzzle_active_cell = [null, [null, null], "a"];
-    crosspuzzle_update_cell_styling(id);
 }
 
 function crosspuzzle_reveal_all(id) {
@@ -307,8 +338,10 @@ function crosspuzzle(id, data) {
     // Reveal and check buttons
     if (crosspuzzle_solution[id] !== null) {
         content += "<div class='crosspuzzle-reveal'>";
+        content += "<button id='crosspuzzle-" + id + "-button-clear-this' onclick='crosspuzzle_clear_this(\"" + id + "\")' disabled>Clear this entry</button>"
         content += "<button id='crosspuzzle-" + id + "-button-check-this' onclick='crosspuzzle_check_this(\"" + id + "\")' disabled>Check this entry</button>"
         content += "<button id='crosspuzzle-" + id + "-button-reveal-this' onclick='crosspuzzle_reveal_this(\"" + id + "\")' disabled>Reveal this entry</button>"
+        content += "<button id='crosspuzzle-" + id + "-button-clear-all' onclick='crosspuzzle_clear_all(\"" + id + "\")' >Clear all entries</button>"
         content += "<button id='crosspuzzle-" + id + "-button-check-all' onclick='crosspuzzle_check_all(\"" + id + "\")' >Check all entries</button>"
         content += "<button id='crosspuzzle-" + id + "-button-reveal-all' onclick='crosspuzzle_reveal_all(\"" + id + "\")' >Reveal all entries</button>"
         content += "</div>";
