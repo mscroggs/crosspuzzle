@@ -21,12 +21,27 @@
 library that can create interactive crossword/crossnumber website widgets.</p>
 <h2>Example puzzles</h2>
 <h3>An example crossword</h3>
+<p>This example crossword is taken from an article that I wrote for
+<a href='https://chalkdustmagazine.com/read/issue-21'>issue 21 of Chalkdust</a>.</p>
 <div id='crossword1'></div>
 <script type='text/javascript'>
 crosspuzzle("crossword1", {
     "grid": ["*SUM*", "SENOR", "IV*DG", "NEPAL", "*NIL*"],
     "clues": {"across": ["Add up.", "Spanish mister.", "Roman four.", "Non-continuous finite element.", "Country with non-rectangular flag.", "Footballer's zero."],
               "down": ["English sept.", "French one.", "Most common.", "opp &div; hyp.", "Rugeley Trent Valley.", "Greek p."]}
+})
+</script>
+
+<h3>An example crossnumber</h3>
+<p>This example crossnumber is a puzzle that I wrote for the puzzle page in
+<a href='https://chalkdustmagazine.com/read/issue-15'>issue 15 of Chalkdust</a>.</p>
+<div id='crossnumber1'></div>
+<script type='text/javascript'>
+crosspuzzle("crossnumber1", {
+    "grid": ["???*???", "?*???*?", "???*???"],
+    "clues": {"across": ["2D&div;2.", "1D&times;2.", "2D&times;2.", "3A&times;2.","3A&div;3."],
+              "down": ["3A&div;2.", "1A&times;2.", "3D&times;1.", "2D&div;1."]},
+    "valid_chars": "0123456789"
 })
 </script>
 
@@ -61,9 +76,13 @@ crosspuzzle("crossword1", {<br />
 </div>
 <p>The first input to the function is the id of the empty div we created above: crosspuzzle
 will place the widget inside this div. The second input is Javascript Object that includes
-the details of the puzzle: the key <code>"grid"</code> is used to input the crossword grid
-as a list of rows; the key <code>"clues"</code> is used to input the clues, with the across
-and down clues given in numerical order.</p>
+the details of the puzzle</p>
+<ul>
+<li>the key <code>"grid"</code> is used to input the crossword grid
+as a list of rows. <code>*</code> is used to denote black squares</li>
+<li>the key <code>"clues"</code> is used to input the clues, with the across
+and down clues given in numerical order.</li>
+</ul>
 
 </div>
 </body>
