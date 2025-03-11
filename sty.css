@@ -9,11 +9,11 @@
 /***********************************/
 
 body {
-    font-family: sans-serif;
+    font-family:sans-serif;
 }
 
 .crosspuzzle-cell {
-    outline: 2px solid black;
+    outline:2px solid black;
 }
 
 a.crosspuzzle-cell {
@@ -24,7 +24,7 @@ a.crosspuzzle-cell {
 }
 
 .crosspuzzle-cell.crosspuzzle-cell-white {
-    background: white;
+    background:white;
 }
 
 .crosspuzzle-cell.crosspuzzle-cell-white.crosspuzzle-cell-active {
@@ -45,13 +45,13 @@ a.crosspuzzle-cell {
 }
 
 .crosspuzzle-clue-title {
-    font-weight: bold;
+    font-weight:bold;
     padding-top:30px;
     padding-bottom:5px;
 }
 
 .crosspuzzle-clue-n-in-grid {
-    pointer-events: none;
+    pointer-events:none;
     font-size:60%;
     padding:1px;
 }
@@ -67,3 +67,6 @@ a.crosspuzzle-cell {
     padding-bottom:30px;
 }
 
+h2 {
+    margin-top:80px;
+}

@@ -11,13 +11,9 @@ var crosspuzzle_active_cell = [null, [null, null], "a"];
 var crosspuzzle_all_white_cells = {};
 var crosspuzzle_entered = {};
 var crosspuzzle_sizes = {};
-var crosspuzzle_letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+var crosspuzzle_letters = {};
 var crosspuzzle_n_to_clue = {};
 var crosspuzzle_clue_to_positions = {};
-
-var crosspuzzle_settings = {
-    "cell_size": "35px"
-};
 
 function crosspuzzle_is_white(id, entry) {
     for (i in crosspuzzle_all_white_cells[id]) {
@@ -139,9 +135,19 @@ function crosspuzzle(id, data) {
     var dlens = [];
 
     crosspuzzle_sizes[id] = [g.length, g[0].length];
+    if ("valid_chars" in data) {
+        crosspuzzle_letters[id] = data["valid_chars"];
+    } else {
+        crosspuzzle_letters[id] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    }
     var clue_n = 1;
 
-    content += "<div class='crosspuzzle-grid' style='display:grid;grid-template-rows:repeat(" + crosspuzzle_sizes[id][0] + ", " + crosspuzzle_settings["cell_size"] + ");grid-template-columns:1fr repeat(" + crosspuzzle_sizes[id][1] + ", " + crosspuzzle_settings["cell_size"] + ") 1fr'>"
+    var cell_size = "35px";
+    if ("cell_size" in data) {
+        cell_size = data[cell_size];
+    }
+
+    content += "<div class='crosspuzzle-grid' style='display:grid;grid-template-rows:repeat(" + crosspuzzle_sizes[id][0] + ", " + cell_size + ");grid-template-columns:1fr repeat(" + crosspuzzle_sizes[id][1] + ", " + cell_size + ") 1fr'>"
     for (var row = 0; row < crosspuzzle_sizes[id][0]; row++) {
         if (g[row].length != crosspuzzle_sizes[id][1]) {
             c.innerHTML = "<span style='color:red'>Error: grid rows non-equal lengths</span>";
@@ -183,7 +189,7 @@ function crosspuzzle(id, data) {
             }
             if(crosspuzzle_entry_is_white(g[row][col])) {
                 crosspuzzle_all_white_cells[id][crosspuzzle_all_white_cells[id].length] = [row, col];
-                content += "<a id='" + crosspuzzle_get_cell_id(id, [row, col]) + "' class='crosspuzzle-cell crosspuzzle-cell-white' style='line-height:" + crosspuzzle_settings["cell_size"] + ";grid-row:" + (row+1) + " / span 1;grid-column:" + (col+2) + " / span 1' ";
+                content += "<a id='" + crosspuzzle_get_cell_id(id, [row, col]) + "' class='crosspuzzle-cell crosspuzzle-cell-white' style='line-height:" + cell_size + ";grid-row:" + (row+1) + " / span 1;grid-column:" + (col+2) + " / span 1' ";
                 content += "href='javascript:crosspuzzle_click_cell(\"" + id + "\", " + row + ", " + col + ")'></a>";
             } else if(crosspuzzle_entry_is_black(g[row][col])) {
                 content += "<div class='crosspuzzle-cell crosspuzzle-cell-black' style='grid-row:" + (row+1) + " / span 1;grid-column:" + (col+2) + " / span 1'>&nbsp;</div>";
@@ -325,9 +331,9 @@ document.addEventListener("keydown", (e) => {
                 crosspuzzle_update_cell_styling(id);
                 return;
             }
-            for (i in crosspuzzle_letters) {
-                var c = crosspuzzle_letters[i];
-                if (e.code == "Key" + c) {
+            for (i in crosspuzzle_letters[id]) {
+                var c = crosspuzzle_letters[id][i];
+                if (e.code == "Key" + c || e.code == "Digit" + c) {
                     crosspuzzle_entered[id][crosspuzzle_n(id, crosspuzzle_active_cell[1])] = c;
                     crosspuzzle_get_cell(id, crosspuzzle_active_cell[1]).innerHTML = c;
                     if (crosspuzzle_active_cell[2] == "a") {
