@@ -37,6 +37,30 @@ In the <code>&lt;head&gt;</code> part of the html file, we include crosspuzzle.j
 <div style='margin:0px 40px'>
 <code>&lt;script type='text/javascript' src='crosspuzzle.js'&gt;&lt;/script&gt;</code>
 </div>
+<p>Each puzzle is then generated via a call to the function <code>crosspuzzle</code>.</p>
+
+<h3>An example crossword</h3>
+<p>To create the first puzzle, we first include an empty div:</p>
+<div style='margin:0px 40px'>
+<code>&lt;div id='crossword1'&gt;&lt;/div&gt;</code>
+</div>
+<p>The puzzle is then created:</p>
+<div style='margin:0px 40px'>
+<code>
+&lt;script type='text/javascript'&gt;<br />
+crosspuzzle("crossword1", {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;"grid": ["*SUM*", "SENOR", "IV*DG", "NEPAL", "*NIL*"],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;"clues": {"across": ["Add up.", "Spanish mister.", "Roman four.",<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Non-continuous finite element.", "Country with non-rectangular flag.",<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Footballer's zero."],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"down": ["English sept.", "French one.", "Most common.", "opp &div; hyp.",<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Rugeley Trent Valley.", "Greek p."]}<br />
+})<br />
+&lt;/script&gt;
+</code>
+</div>
+<p>The first input to the function is the id of the empty div we created above: crosspuzzle
+will place the widget inside this div.</p>
 
 </div>
 </body>

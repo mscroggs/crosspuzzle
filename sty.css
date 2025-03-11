@@ -12,6 +12,10 @@ body {
     font-family:sans-serif;
 }
 
+h2 {
+    margin-top:80px;
+}
+
 .crosspuzzle-cell {
     outline:2px solid black;
 }
@@ -28,15 +32,25 @@ a.crosspuzzle-cell {
 }
 
 .crosspuzzle-cell.crosspuzzle-cell-white.crosspuzzle-cell-active {
-    background-color:red;
+    background-color:#FFA366;
 }
 
 .crosspuzzle-cell.crosspuzzle-cell-white.crosspuzzle-cell-clue-active {
-    background-color:pink;
+    background-color:#FFE3CC;
 }
 
 .crosspuzzle-cell.crosspuzzle-cell-black {
     background-color:black;
+}
+
+.crosspuzzle-cell.crosspuzzle-cell-correct {
+    color:black;
+    font-weight:bold;
+}
+
+.crosspuzzle-cell.crosspuzzle-cell-incorrect {
+    color:red;
+    font-weight:bold;
 }
 
 .crosspuzzle-clue-container {
@@ -67,6 +81,12 @@ a.crosspuzzle-cell {
     padding-bottom:30px;
 }
 
-h2 {
-    margin-top:80px;
+.crosspuzzle-reveal {
+    padding:10px;
+    text-align:center;
+}
+
+.crosspuzzle-reveal button {
+    margin:5px;
+    padding:4px;
 }
