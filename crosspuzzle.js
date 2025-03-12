@@ -1,5 +1,5 @@
 /***********************************/
-/* Crosspuzzle v0.0.1              */
+/* Crosspuzzle v0.1.0              */
 /*                                 */
 /* Created by Matthew Scroggs      */
 /* Released under MIT license      */
