@@ -25,7 +25,15 @@ table, table tr td, table tr {
     border-collapse:collapse;
 }
 
-thead td {
+thead tr:last-of-type td {
+    border-bottom:2px solid #CCCCCC;
+}
+
+thead tr:first-of-type td {
+    border-top:2px solid #CCCCCC;
+}
+
+table tr:last-of-type td {
     border-bottom:2px solid #CCCCCC;
 }
 
