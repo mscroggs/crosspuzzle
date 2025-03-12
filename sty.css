@@ -17,7 +17,8 @@ h2 {
 }
 
 .crosspuzzle-cell {
-    outline:2px solid black;
+    border:2px solid black;
+    margin:-1px
 }
 
 a.crosspuzzle-cell {
@@ -67,7 +68,7 @@ a.crosspuzzle-cell {
 .crosspuzzle-clue-n-in-grid {
     pointer-events:none;
     font-size:60%;
-    padding:1px;
+    padding:2px;
 }
 
 .crosspuzzle-clue-active {
