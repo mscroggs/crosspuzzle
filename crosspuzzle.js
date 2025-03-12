@@ -385,7 +385,7 @@ function crosspuzzle(id, data) {
                 content += "<div class='crosspuzzle-cell crosspuzzle-cell-black' style='grid-row:" + (row+1) + " / span 1;grid-column:" + (col+2) + " / span 1'>&nbsp;</div>";
             }
             if ("custom_numbering" in data) {
-                if (data["custom_numbering"][row][col] != "-") {
+                if (data["custom_numbering"][row][col] != "") {
                     content += "<div class='crosspuzzle-clue-n-in-grid' style='grid-row:" + (row+1) + " / span 1;grid-column:" + (col+2) + " / span 1'>";
                     content += data["custom_numbering"][row][col];
                     content += "</div>";
