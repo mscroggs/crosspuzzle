@@ -17,6 +17,7 @@ var crosspuzzle_clue_to_positions = {};
 var crosspuzzle_solution = {}
 var crosspuzzle_checked = {}
 var crosspuzzle_revealed = {}
+var crosspuzzle_settings = {}
 
 function crosspuzzle_is_white(id, entry) {
     for (var i in crosspuzzle_all_white_cells[id]) {
@@ -43,7 +44,9 @@ function crosspuzzle_update_cell_styling(id) {
         document.getElementById("crosspuzzle-" + id2 + "-button-clear-this").disabled = true;
         if (crosspuzzle_solution[id2] !== null) {
             document.getElementById("crosspuzzle-" + id2 + "-button-check-this").disabled = true;
-            document.getElementById("crosspuzzle-" + id2 + "-button-reveal-this").disabled = true;
+            if (crosspuzzle_settings[id2]["show_reveal_button"]) {
+                document.getElementById("crosspuzzle-" + id2 + "-button-reveal-this").disabled = true;
+            }
         }
     }
     for (var i in crosspuzzle_all_white_cells[id]) {
@@ -65,7 +68,9 @@ function crosspuzzle_update_cell_styling(id) {
         document.getElementById("crosspuzzle-" + id + "-button-clear-this").disabled = false;
         if (crosspuzzle_solution[id] !== null) {
             document.getElementById("crosspuzzle-" + id + "-button-check-this").disabled = false;
-            document.getElementById("crosspuzzle-" + id + "-button-reveal-this").disabled = false;
+            if (crosspuzzle_settings[id]["show_reveal_button"]) {
+                document.getElementById("crosspuzzle-" + id + "-button-reveal-this").disabled = false;
+            }
         }
         var d = crosspuzzle_active_cell[2]
         var clue_n = crosspuzzle_n_to_clue[id][crosspuzzle_n(id, crosspuzzle_active_cell[1])][d];
@@ -245,9 +250,13 @@ function crosspuzzle(id, data) {
     crosspuzzle_entered[id] = {};
     crosspuzzle_n_to_clue[id] = {};
     crosspuzzle_clue_to_positions[id] = {"a": [], "d": []};
-    crosspuzzle_solution[id] = {}
-    crosspuzzle_checked[id] = {}
-    crosspuzzle_revealed[id] = {}
+    crosspuzzle_solution[id] = {};
+    crosspuzzle_checked[id] = {};
+    crosspuzzle_revealed[id] = {};
+    crosspuzzle_settings[id] = {"show_reveal_button": true};
+    if ("show_reveal_button" in data) {
+        crosspuzzle_settings[id]["show_reveal_button"] = data["show_reveal_button"];
+    }
 
     // Active clue
     content += "<div class='crosspuzzle-active-clue' id='crosspuzzle-" + id + "-active-clue'>&nbsp;</div>";
@@ -441,12 +450,16 @@ function crosspuzzle(id, data) {
     content += "<button id='crosspuzzle-" + id + "-button-clear-this' onclick='crosspuzzle_clear_this(\"" + id + "\")' disabled>Clear this entry</button>";
     if (crosspuzzle_solution[id] !== null) {
         content += "<button id='crosspuzzle-" + id + "-button-check-this' onclick='crosspuzzle_check_this(\"" + id + "\")' disabled>Check this entry</button>";
-        content += "<button id='crosspuzzle-" + id + "-button-reveal-this' onclick='crosspuzzle_reveal_this(\"" + id + "\")' disabled>Reveal this entry</button>";
+        if (crosspuzzle_settings[id]["show_reveal_button"]) {
+            content += "<button id='crosspuzzle-" + id + "-button-reveal-this' onclick='crosspuzzle_reveal_this(\"" + id + "\")' disabled>Reveal this entry</button>";
+        }
     }
     content += "<button id='crosspuzzle-" + id + "-button-clear-all' onclick='crosspuzzle_clear_all(\"" + id + "\")' >Clear all entries</button>";
     if (crosspuzzle_solution[id] !== null) {
         content += "<button id='crosspuzzle-" + id + "-button-check-all' onclick='crosspuzzle_check_all(\"" + id + "\")' >Check all entries</button>";
-        content += "<button id='crosspuzzle-" + id + "-button-reveal-all' onclick='crosspuzzle_reveal_all(\"" + id + "\")' >Reveal all entries</button>";
+        if (crosspuzzle_settings[id]["show_reveal_button"]) {
+            content += "<button id='crosspuzzle-" + id + "-button-reveal-all' onclick='crosspuzzle_reveal_all(\"" + id + "\")' >Reveal all entries</button>";
+        }
     }
     content += "</div>";
 

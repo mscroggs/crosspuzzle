@@ -73,7 +73,8 @@ crosspuzzle("fun-puzzle", {
         ["", "", "", "", "28", "", "", "", "29", "", "", "", ""],
         ["", "", "", "", "", "30", "", "31", "", "", "", "", ""],
         ["", "", "", "", "", "", "34", "", "", "", "", "", ""],
-    ]
+    ],
+    "show_reveal_button": false
 })
 </script>
 
@@ -163,7 +164,8 @@ crosspuzzle("fun-puzzle", {<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;["", "", "", "", "", "", "", "", "", "", "", "", ""],<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;["", "", "", "", "2", "", "", "", "3", "", "", "", ""],<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br />
-&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+&nbsp;&nbsp;&nbsp;&nbsp;],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;"show_reveal_button": false
 })<br />
 &lt;/script&gt;
 </code>
@@ -179,6 +181,8 @@ numbering style of provding the numbers of the first and last letters of the ent
 <li>the key <code>"clue_number_width"</code> is used to set the width of the clue number column
 in the clue list</li>
 <li>the key <code>"custom_numbering"</code> is used to position custom numbers in the grid</li>
+<li>the key <code>"show_reveal_button"</code> is used to hide the reveal button (note that
+the solution is still visible by viewing the source of the pade)</li>
 </ul>
 
 <h2>Reference</h2>
@@ -197,6 +201,7 @@ in the clue list</li>
 <tr><td><code>"clue_number_width"</code></td><td></td><td>35px</td><td>The width of the clue column in the clue list</td></tr>
 <tr><td><code>"clue_length_width"</code></td><td></td><td>35px</td><td>The width of the clue column in the clue list</td></tr>
 <tr><td><code>"cell_size"</code></td><td></td><td>35px</td><td>The width and height of each cell</td></tr>
+<tr><td><code>"show_reveal_button"</code></td><td></td><td><code>true</code></td><td>Shows/hides the reveal buttons</td></tr>
 </table>
 
 </div>
