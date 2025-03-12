@@ -73,9 +73,21 @@ a.crosspuzzle-cell {
 }
 
 .crosspuzzle-cell.crosspuzzle-cell-correct {
-    color:black;
+    color:white;
+    background-color:#008000;
     font-weight:bold;
 }
+
+.crosspuzzle-cell.crosspuzzle-cell-white.crosspuzzle-cell-active {
+    background-color:#FFA366;
+    color:#000000;
+}
+
+.crosspuzzle-cell.crosspuzzle-cell-white.crosspuzzle-cell-clue-active {
+    background-color:#FFE3CC;
+    color:#000000;
+}
+
 
 .crosspuzzle-cell.crosspuzzle-cell-incorrect {
     color:red;
