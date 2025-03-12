@@ -700,16 +700,11 @@ function crosspuzzle_add_input_listener(obj) {
                 else if (new_char == " ") { crosspuzzle_process_key(id, "Space"); }
                 else if ("01234567889".includes(new_char)) { crosspuzzle_process_key(id, "Digit" + new_char); }
                 else { crosspuzzle_process_key(id, "Key" + new_char); }
-            } else if (i.value.length == 0) {
+            } else {
                 crosspuzzle_process_key(id, "Backspace");
             }
         }
         obj.value = " ";
-    });
-    obj.addEventListener("blur", (e) => {
-        var id = crosspuzzle_active_cell[0];
-        crosspuzzle_active_cell = [null, [null, null], "a"];
-        crosspuzzle_update_cell_styling(id);
     });
 }
 
