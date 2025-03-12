@@ -19,6 +19,7 @@ var crosspuzzle_checked = {}
 var crosspuzzle_revealed = {}
 var crosspuzzle_settings = {}
 var crosspuzzle_input_version2 = true;
+var crosspuzzle_start_time = {}
 
 function crosspuzzle_is_white(id, entry) {
     for (var i in crosspuzzle_all_white_cells[id]) {
@@ -275,10 +276,7 @@ function crosspuzzle(id, data) {
     crosspuzzle_solution[id] = {};
     crosspuzzle_checked[id] = {};
     crosspuzzle_revealed[id] = {};
-    crosspuzzle_settings[id] = {"show_reveal_button": true};
-    if ("show_reveal_button" in data) {
-        crosspuzzle_settings[id]["show_reveal_button"] = data["show_reveal_button"];
-    }
+    crosspuzzle_settings[id] = {}
 
     // Active clue
     content += "<div class='crosspuzzle-active-clue' id='crosspuzzle-" + id + "-active-clue'>&nbsp;</div>";
@@ -470,6 +468,28 @@ function crosspuzzle(id, data) {
         }
     }
     content += "</div>";
+
+    crosspuzzle_settings[id]["show_reveal_button"] = (crosspuzzle_solution[id] !== null);
+    if ("show_reveal_button" in data) {
+        crosspuzzle_settings[id]["show_reveal_button"] = data["show_reveal_button"];
+    }
+    if (crosspuzzle_solution[id] === null && crosspuzzle_settings[id]["show_reveal_button"]) {
+        c.innerHTML = "<span style='color:red'>Error: cannot show reveal button on puzzle with no solution</span>";
+        return;
+    }
+
+    crosspuzzle_settings[id]["timer"] = (crosspuzzle_solution[id] !== null);
+    if ("timer" in data) {
+        crosspuzzle_settings[id]["timer"] = data["timer"];
+    }
+    if (crosspuzzle_solution[id] === null && crosspuzzle_settings[id]["timer"]) {
+        c.innerHTML = "<span style='color:red'>Error: cannot use timer with puzzle with no solution</span>";
+        return;
+    }
+
+    if (crosspuzzle_settings[id]["timer"]) {
+        content += "<div class='crosspuzzle-timer' id='crosspuzzle-" + id + "-timer'>The timer will begin when you start the puzzle.</div>"
+    }
 
     // Reveal and check buttons
     content += "<div class='crosspuzzle-reveal'>";
