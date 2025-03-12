@@ -64,6 +64,7 @@ h2 {
     background-color:white;
     margin-top:0;
     padding:20px;
+    padding-bottom:100px;
 }
 
 thead td {
@@ -180,8 +181,4 @@ a.crosspuzzle-cell {
 .crosspuzzle-reveal button {
     margin:5px;
     padding:4px;
-}
-
-.crosspuzzle-cell-input {
-    z-index:-10;
 }

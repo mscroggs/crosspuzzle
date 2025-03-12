@@ -404,7 +404,7 @@ function crosspuzzle(id, data) {
                 }
                 crosspuzzle_all_white_cells[id][crosspuzzle_all_white_cells[id].length] = [row, col];
                 if (!input_added) {
-                    content += "<textarea id='crosspuzzle-" + id + "-input' class='crosspuzzle-cell-input' style='grid-row:" + (row+1) + " / span 1;grid-column:" + (col+2) + " / span 1;'></textarea>";
+                    content += "<textarea id='crosspuzzle-" + id + "-input' class='crosspuzzle-cell-input' style='z-index:-10;grid-row:" + (row+1) + " / span 1;grid-column:" + (col+2) + " / span 1;'></textarea>";
                     input_added = true;
                 }
                 content += "<a id='" + crosspuzzle_get_cell_id(id, [row, col]) + "' class='crosspuzzle-cell crosspuzzle-cell-white' style='grid-row:" + (row+1) + " / span 1;grid-column:" + (col+2) + " / span 1' ";
