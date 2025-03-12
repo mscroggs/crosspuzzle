@@ -8,12 +8,62 @@
 /* github.com/mscroggs/crosspuzzle */
 /***********************************/
 
+@media(min-width:1000px) {
+.main {
+    width:800px;
+}
+
+.crosspuzzle-down {
+    grid-column:3 / span 1;
+    grid-row:1 / span 1;
+}
+
+.crosspuzzle-clue-container {
+    grid-template-columns:1fr 20px 1fr;
+    grid-template-rows:1fr;
+}
+} /* @media(min-width:1000px) */
+
+@media(max-width:1000px) {
+.main {
+    width:90vw;
+}
+
+.crosspuzzle-down {
+    grid-column:1 / span 1;
+    grid-row:3 / span 1;
+}
+
+.crosspuzzle-clue-container {
+    grid-template-columns:1fr;
+    grid-template-rows:auto 20px auto;
+}
+} /* @media(max-width:1000px) */
+
+.crosspuzzle-across {
+    grid-column:1 / span 1;
+    grid-row:1 / span 1;
+}
+
+.crosspuzzle-clue-container {
+    display:grid;
+}
+
 body {
     font-family:sans-serif;
+    background-color:#FFA366;
+    margin:0px
 }
 
 h2 {
     margin-top:80px;
+}
+
+.main {
+    margin:auto;
+    background-color:white;
+    margin-top:0;
+    padding:20px;
 }
 
 thead td {
@@ -50,10 +100,10 @@ td {
 }
 
 a.crosspuzzle-cell {
+    padding:0px;
     text-decoration:none;
     color:black;
     text-align:center;
-    line-height:30px;
 }
 
 .crosspuzzle-cell.crosspuzzle-cell-white {
@@ -94,11 +144,6 @@ a.crosspuzzle-cell {
     font-weight:bold;
 }
 
-.crosspuzzle-clue-container {
-    display:grid;
-    grid-template-columns:1fr 20px 1fr;
-}
-
 .crosspuzzle-clue-container a {
     color:black;
     text-decoration:none;
@@ -135,4 +180,8 @@ a.crosspuzzle-cell {
 .crosspuzzle-reveal button {
     margin:5px;
     padding:4px;
+}
+
+.crosspuzzle-cell-input {
+    z-index:-10;
 }
