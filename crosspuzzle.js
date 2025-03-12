@@ -159,12 +159,14 @@ function crosspuzzle_clear_this(id) {
         var positions = crosspuzzle_clue_to_positions[id][crosspuzzle_active_cell[2]][active_clue];
         for (var p in positions) {
             var pos = positions[p];
-            if (crosspuzzle_n(id, pos) in crosspuzzle_entered[id]) {
-                delete crosspuzzle_entered[id][crosspuzzle_n(id, pos)];
-                crosspuzzle_get_cell(id, pos).innerHTML = "";
-            }
-            if (crosspuzzle_n(id, pos) in crosspuzzle_checked[id]) {
-                delete crosspuzzle_checked[id][crosspuzzle_n(id, pos)];
+            if (!(crosspuzzle_n(id, pos) in crosspuzzle_revealed[id])) {
+                if (crosspuzzle_n(id, pos) in crosspuzzle_entered[id]) {
+                    delete crosspuzzle_entered[id][crosspuzzle_n(id, pos)];
+                    crosspuzzle_get_cell(id, pos).innerHTML = "";
+                }
+                if (crosspuzzle_n(id, pos) in crosspuzzle_checked[id]) {
+                    delete crosspuzzle_checked[id][crosspuzzle_n(id, pos)];
+                }
             }
         }
         crosspuzzle_update_cell_styling(id);
@@ -173,10 +175,12 @@ function crosspuzzle_clear_this(id) {
 
 function crosspuzzle_clear_all(id) {
     for (var i in crosspuzzle_entered[id]) {
-        crosspuzzle_get_cell(id, crosspuzzle_solution[id][i][0]).innerHTML = "";
-        delete crosspuzzle_entered[id][i];
-        if (i in crosspuzzle_checked[id]) {
-            delete crosspuzzle_checked[id][i];
+        if (!(i in crosspuzzle_revealed[id])) {
+            crosspuzzle_get_cell(id, crosspuzzle_solution[id][i][0]).innerHTML = "";
+            delete crosspuzzle_entered[id][i];
+            if (i in crosspuzzle_checked[id]) {
+                delete crosspuzzle_checked[id][i];
+            }
         }
     }
     crosspuzzle_update_cell_styling(id);
