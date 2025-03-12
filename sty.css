@@ -79,6 +79,11 @@ a.crosspuzzle-cell {
     grid-template-columns:1fr 20px 1fr;
 }
 
+.crosspuzzle-clue-container a {
+    color:black;
+    text-decoration:none;
+}
+
 .crosspuzzle-clue-title {
     font-weight:bold;
     padding-top:30px;
