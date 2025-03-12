@@ -18,6 +18,7 @@ var crosspuzzle_solution = {}
 var crosspuzzle_checked = {}
 var crosspuzzle_revealed = {}
 var crosspuzzle_settings = {}
+var crosspuzzle_input_version2 = true;
 
 function crosspuzzle_is_white(id, entry) {
     for (var i in crosspuzzle_all_white_cells[id]) {
@@ -113,6 +114,22 @@ function crosspuzzle_update_cell_styling(id) {
     for (var i in crosspuzzle_revealed[id]) {
         var pos = crosspuzzle_solution[id][i][0];
         crosspuzzle_get_cell(id, pos).className += " crosspuzzle-cell-correct";
+    }
+
+    if (crosspuzzle_solution[id] !== null && Object.keys(crosspuzzle_entered[id]).length >= Object.keys(crosspuzzle_solution[id]).length - Object.keys(crosspuzzle_revealed[id]).length) {
+        var correct = true;
+        for (var i in crosspuzzle_solution[id]) {
+            var pos = crosspuzzle_solution[id][i][0];
+            var c = crosspuzzle_solution[id][i][1];
+            if (!(crosspuzzle_n(id, pos) in crosspuzzle_revealed[id]) && (!(crosspuzzle_n(id, pos) in crosspuzzle_entered[id]) || crosspuzzle_entered[id][crosspuzzle_n(id, pos)] != c)) {
+                correct = false;
+                break;
+            }
+        }
+        if (correct) {
+            document.getElementById("crosspuzzle-" + id + "-congratulations").style.pointerEvents = "all";
+            document.getElementById("crosspuzzle-" + id + "-congratulations").style.opacity = 1;
+        }
     }
 }
 
@@ -243,6 +260,11 @@ function crosspuzzle_reveal_all(id) {
     crosspuzzle_update_cell_styling(id);
 }
 
+function crosspuzzle_hide_congrats(id) {
+    document.getElementById("crosspuzzle-" + id + "-congratulations").style.pointerEvents = "none";
+    document.getElementById("crosspuzzle-" + id + "-congratulations").style.opacity = 0;
+}
+
 function crosspuzzle(id, data) {
     var c = document.getElementById(id);
     var content = "";
@@ -343,6 +365,10 @@ function crosspuzzle(id, data) {
     content += "}\n";
     content += "</style>";
     content += "<div id='crosspuzzle-" + id + "-grid' class='crosspuzzle-grid'>"
+    content += "<div id='crosspuzzle-" + id + "-congratulations' class='crosspuzzle-congratulations' style='z-index:10;grid-row:1 / span " + crosspuzzle_sizes[id][1] + ";grid-column:1 / span " + (crosspuzzle_sizes[id][0] + 2) + ";background-color:white;margin:20px 50px;border:2px solid black;padding:5px;text-align:center;opacity:0;pointer-events:none'>"
+    content += "Congratulations! You solved the puzzle!<br /><br /><span id='crosspuzzle-" + id + "-congratulations-more-info'></span>"
+    content += "<a href='javascript:crosspuzzle_hide_congrats(\"" + id + "\")'>View solution</a>"
+    content += "</div>"
     for (var row = 0; row < crosspuzzle_sizes[id][0]; row++) {
         if (g[row].length != crosspuzzle_sizes[id][1]) {
             c.innerHTML = "<span style='color:red'>Error: grid rows non-equal lengths</span>";
@@ -567,7 +593,7 @@ function crosspuzzle_process_key(id, key_code) {
     if (key_code === "Escape") {
         crosspuzzle_active_cell = [null, [null, null], "a"];
         crosspuzzle_update_cell_styling(id);
-        return;
+        return true;
     }
     if (key_code === "Space") {
         if (crosspuzzle_active_cell[2] == "a" && "d" in crosspuzzle_n_to_clue[id][crosspuzzle_n(id, crosspuzzle_active_cell[1])]) {
@@ -576,7 +602,7 @@ function crosspuzzle_process_key(id, key_code) {
             crosspuzzle_active_cell[2] = "a";
         }
         crosspuzzle_update_cell_styling(id);
-        return;
+        return true;
     }
     if (crosspuzzle_active_cell[1][0] !== null) {
         if (key_code === "ArrowUp") {
@@ -587,7 +613,7 @@ function crosspuzzle_process_key(id, key_code) {
                 }
                 crosspuzzle_update_cell_styling(id);
             }
-            return;
+            return true;
         }
         if (key_code === "ArrowDown") {
             if ("d" in crosspuzzle_n_to_clue[id][crosspuzzle_n(id, crosspuzzle_active_cell[1])]) {
@@ -597,7 +623,7 @@ function crosspuzzle_process_key(id, key_code) {
                 }
                 crosspuzzle_update_cell_styling(id);
             }
-            return;
+            return true;
         }
         if (key_code === "ArrowRight") {
             if ("a" in crosspuzzle_n_to_clue[id][crosspuzzle_n(id, crosspuzzle_active_cell[1])]) {
@@ -607,7 +633,7 @@ function crosspuzzle_process_key(id, key_code) {
                 }
                 crosspuzzle_update_cell_styling(id);
             }
-            return;
+            return true;
         }
         if (key_code === "ArrowLeft") {
             if ("a" in crosspuzzle_n_to_clue[id][crosspuzzle_n(id, crosspuzzle_active_cell[1])]) {
@@ -617,7 +643,7 @@ function crosspuzzle_process_key(id, key_code) {
                 }
                 crosspuzzle_update_cell_styling(id);
             }
-            return;
+            return true;
         }
         if (key_code === "Backspace") {
             crosspuzzle_get_cell(id, crosspuzzle_active_cell[1]).innerHTML = "";
@@ -628,12 +654,12 @@ function crosspuzzle_process_key(id, key_code) {
                 crosspuzzle_active_cell[1][0] -= 1;
             }
             crosspuzzle_update_cell_styling(id);
-            return;
+            return true;
         }
         if (key_code === "Delete") {
             crosspuzzle_get_cell(id, crosspuzzle_active_cell[1]).innerHTML = "";
             delete crosspuzzle_entered[id][crosspuzzle_n(id, crosspuzzle_active_cell[1])]
-            return;
+            return true;
         }
         if (key_code === "Enter") {
             var active_clue = crosspuzzle_n_to_clue[id][crosspuzzle_n(id, crosspuzzle_active_cell[1])][crosspuzzle_active_cell[2]];
@@ -653,7 +679,7 @@ function crosspuzzle_process_key(id, key_code) {
                 }
             }
             crosspuzzle_update_cell_styling(id);
-            return;
+            return true;
         }
         for (var i in crosspuzzle_letters[id]) {
             var c = crosspuzzle_letters[id][i];
@@ -687,17 +713,20 @@ function crosspuzzle_process_key(id, key_code) {
                     }
                 }
                 crosspuzzle_update_cell_styling(id);
-                return;
+                return true;
             }
         }
     }
+    return false;
 }
 
 document.addEventListener("keydown", (e) => {
     var id = crosspuzzle_active_cell[0];
     if (id !== null) {
-        e.preventDefault();
-        crosspuzzle_process_key(id, e.code)
+        if(crosspuzzle_process_key(id, e.code)) {
+            crosspuzzle_input_version2 = false;
+            e.preventDefault();
+        }
     }
 });
 
@@ -713,21 +742,10 @@ function crosspuzzle_add_input_listener(obj) {
                 else if (new_char == " ") { crosspuzzle_process_key(id, "Space"); }
                 else if ("01234567889".includes(new_char)) { crosspuzzle_process_key(id, "Digit" + new_char); }
                 else { crosspuzzle_process_key(id, "Key" + new_char); }
-            } else {
+            } else if (crosspuzzle_input_version2) {
                 crosspuzzle_process_key(id, "Backspace");
             }
         }
         obj.value = " ";
     });
 }
-
-function crosspuzzle_infer_keycode() {
-    var id = crosspuzzle_active_cell[0];
-    if (id === null) {
-        return "";
-    }
-    var new_value = document.getElementById("crosspuzzle-" + id + "-input").value;
-    alert(new_value);
-    return "KeyA";
-}
-
