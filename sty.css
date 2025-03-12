@@ -16,6 +16,26 @@ h2 {
     margin-top:80px;
 }
 
+thead td {
+    font-weight:bold;
+    font-size:80%;
+}
+
+table, table tr td, table tr {
+    border-collapse:collapse;
+}
+
+thead td {
+    border-bottom:2px solid #CCCCCC;
+}
+
+td {
+    border-left:2px solid #CCCCCC;
+    border-right:2px solid #CCCCCC;
+    padding:5px 8px;
+    vertical-align:middle;
+}
+
 .crosspuzzle-cell {
     border:2px solid black;
     margin:-1px

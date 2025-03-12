@@ -113,6 +113,8 @@ as a list of rows. <code>*</code> is used to denote black squares</li>
 <li>the key <code>"clues"</code> is used to input the clues, with the across
 and down clues given in numerical order.</li>
 </ul>
+<p>Note that the solution of the puzzle can be viewed by viewing the source of the page
+(although this is more difficult than simply clicking "Reveal all entries").</p>
 
 <h3>An example crossnumber</h3>
 <p>To create the second puzzle, we first include an empty div:</p>
@@ -132,20 +134,67 @@ crosspuzzle("crossnumber1", {<br />
 &lt;/script&gt;
 </code>
 </div>
-<p>In this puzzle, <code>?</code> is used for all the white squares in this grid: this leads
-to a puzzle whose answer cannot be checked or revealed. The key `"valid_chars"` is used to
+<p>In this puzzle, <code>?</code> is used for all the white squares in <code>"grid"</code>: this leads
+to a puzzle whose answer cannot be checked or revealed. The key <code>"valid_chars"</code> is used to
 set which characters are valid for each white cell in the puzzle.</p>
+<p>For this puzzle, the solution cannot be found by viewing the source of the page.</p>
+
+<h3>Fun's word-cross</h3>
+<p>To create the second puzzle, we first include an empty div:</p>
+<div style='margin:0px 40px'>
+<code>&lt;div id='fun-puzzle'&gt;&lt;/div&gt;</code>
+</div>
+<p>The puzzle is then created:</p>
+<div style='margin:0px 40px'>
+<code>
+&ltscript type='text/javascript'&gt;<br />
+crosspuzzle("fun-puzzle", {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;"grid": ["------R------", "-----FUN-----", ...],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;"revealed": ["------?------", "-----FUN-----", "----?????----", ...],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;"clues": {"across": [":HIDDEN", "What bargain hunters enjoy.", ...],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"down": ["To govern.", "Part of your head.", "A fist.", ...]},<br />
+&nbsp;&nbsp;&nbsp;&nbsp;"clue_numbers": {"across": ["F&ndash;N", "2&ndash;3", "4&ndash;5", ...],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"down": ["1&ndash;32", "F&ndash;7", "N&ndash;8", ...]},<br />
+&nbsp;&nbsp;&nbsp;&nbsp;"clue_number_width": "60px",<br />
+&nbsp;&nbsp;&nbsp;&nbsp;"custom_numbering": [<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;["-", "-", "-", "-", "-", "-", "1", "-", "-", "-", "-", "-", "-"],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;["-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-"],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;["-", "-", "-", "-", "2", "-", "-", "-", "3", "-", "-", "-", "-"],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br />
+&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+})<br />
+&lt;/script&gt;
+</code>
+</div>
+<p>In this puzzle:</p>
+<ul>
+<li><code>-</code> is used in the <code>"grid"</code> for cells that are not included</li>
+<li><code>":HIDDEN"</code> is used to hide the clue for the word FUN from the list of clues</li>
+<li>the key <code>"revealed"</code> is used to set entries that are revealed
+at the start of the puzzle</li>
+<li>the key <code>"clue_numbers"</code> is used to set custom clue numbering, so that the original
+numbering style of provding the numbers of the first and last letters of the entry can be used</li>
+<li>the key <code>"clue_number_width"</code> is used to set the width of the clue number column
+in the clue list</li>
+<li>the key <code>"custom_numbering"</code> is used to position custom numbers in the grid</li>
+</ul>
 
 <h2>Reference</h2>
+<p>The full list of keys that can be used in the input to <code>crosspuzzle</code> is given here:</p>
 
 <table>
 <thead>
 <tr><td>Key</td><td>Required</td><td>Default value</td><td>Purpose</td></tr>
 </thead>
-<tr><td><code>"grid"</code></td><td>&check;</td><td></td><td>The puzzle grid</td></tr>
-<tr><td><code>"clues"</code></td><td>&check;</td><td></td><td>The puzzle clues</td></tr>
-<tr><td><code>"valid_chars"</code></td><td></td><td><code>"ABCDEFGHIJKLMNOPQRSTUVWXYZ"</code></td><td>Valid character for each cell</td></tr>
-<tr><td><code>"revealed"</code></td><td></td><td><code></code></td><td>Characters that are revealed at the start of solving</td></tr>
+<tr><td><code>"grid"</code></td><td>&check;</td><td></td><td>The puzzle grid. <code>*</code> can be used for black cells, <code>-</code> can be used for missing cells, <code>?</code> can be used for other cells if check and reveal buttons are not desired</td></tr>
+<tr><td><code>"clues"</code></td><td>&check;</td><td></td><td>The puzzle clues. <code>:HIDDEN</code> can be used to hide a clue</td></tr>
+<tr><td><code>"valid_chars"</code></td><td></td><td><code>"ABCDEFGHIJKLMNOPQRSTUVWXYZ"</code></td><td>Valid characters for each cell</td></tr>
+<tr><td><code>"revealed"</code></td><td></td><td></td><td>Characters that are revealed at the start of solving</td></tr>
+<tr><td><code>"clue_numbers"</code></td><td></td><td></td><td>The numbers used for each clue in the clue list</td></tr>
+<tr><td><code>"custom_numbering"</code></td><td></td><td></td><td>The numbers that appear in the grid cells</td></tr>
+<tr><td><code>"clue_number_width"</code></td><td></td><td>35px</td><td>The width of the clue column in the clue list</td></tr>
+<tr><td><code>"clue_length_width"</code></td><td></td><td>35px</td><td>The width of the clue column in the clue list</td></tr>
+<tr><td><code>"cell_size"</code></td><td></td><td>35px</td><td>The width and height of each cell</td></tr>
 </table>
 
 </div>
