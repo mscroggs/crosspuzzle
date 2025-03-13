@@ -24,7 +24,7 @@ crosspuzzle("crossword1", {
 </script>
 ```
 
-Detailed examples and usage instructions can be found in [example.html](example.html). This can be
+Detailed examples and usage instructions can be found in [examples.html](examples.html). This can be
 viewed online at [mscroggs.github.io/crosspuzzle](https://mscroggs.github.io/crosspuzzle)
 
 ## License
