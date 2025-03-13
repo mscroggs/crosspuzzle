@@ -582,6 +582,7 @@ function crosspuzzle(id, data) {
         content += "</a>";
     }
     content += "</div>";
+    content += "</div>";
 
     if ("extra_text" in data) {
         content += data["extra_text"];
