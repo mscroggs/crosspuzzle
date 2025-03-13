@@ -1,6 +1,7 @@
 # Crosspuzzle
 
 crosspuzzle is a Javascript library that can create interactive crossword/crossnumber website widgets.
+It is used to create interactive puzzle for [Chalkdust Magazine](https://chalkdustmagazine.com/regulars/crossnumber/prize-crossnumber-issue-21/) and [mscroggs.co.uk](https://mscroggs.co.uk/blog/116)
 
 ## Usage
 
