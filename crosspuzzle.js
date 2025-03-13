@@ -357,7 +357,9 @@ function crosspuzzle(id, data) {
     content += "grid-template-rows:repeat(" + crosspuzzle_sizes[id][0] + ", " + cell_size + ");"
     content += "grid-template-columns:1fr repeat(" + crosspuzzle_sizes[id][1] + ", " + cell_size + ") 1fr"
     content += "}\n";
-    content += ".crosspuzzle-cell {"
+    content += "#crosspuzzle-" + id + "-grid .crosspuzzle-cell-leftarrow, "
+    content += "#crosspuzzle-" + id + "-grid .crosspuzzle-cell-rightarrow, "
+    content += "#crosspuzzle-" + id + "-grid .crosspuzzle-cell {"
     content += "line-height:" + cell_size + ";"
     content += "}\n";
     content += "}\n";
@@ -367,6 +369,8 @@ function crosspuzzle(id, data) {
     content += "grid-template-rows:repeat(" + crosspuzzle_sizes[id][0] + ", " + mobile_cell_size + ");"
     content += "grid-template-columns:1fr repeat(" + crosspuzzle_sizes[id][1] + ", " + mobile_cell_size + ") 1fr"
     content += "}\n";
+    content += "#crosspuzzle-" + id + "-grid .crosspuzzle-cell-leftarrow, "
+    content += "#crosspuzzle-" + id + "-grid .crosspuzzle-cell-rightarrow, "
     content += "#crosspuzzle-" + id + "-grid .crosspuzzle-cell {"
     content += "line-height:" + mobile_cell_size + ";"
     content += "}\n";
@@ -474,6 +478,18 @@ function crosspuzzle(id, data) {
             }
             if (increase) {
                 clue_n++;
+            }
+        }
+    }
+    if ("arrows" in data) {
+        for (var i in data["arrows"]) {
+            var a = data["arrows"][i];
+            if (a[0] == "across") {
+                content += "<div class='crosspuzzle-cell-rightarrow' style='grid-row:" + (a[1]+1) + " / span 1;grid-column:1 / span 1'>&rarr;</div>";
+                content += "<div class='crosspuzzle-cell-leftarrow' style='grid-row:" + (a[1]+1) + " / span 1;grid-column:" + (crosspuzzle_sizes[id][1] + 2) + " / span 1'>&larr;</div>";
+            } else {
+                c.innerHTML = "<span style='color:red'>Error: only across arrows are currently supported</span>";
+                return;
             }
         }
     }

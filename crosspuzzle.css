@@ -93,7 +93,6 @@ a.crosspuzzle-cell {
     color:#000000;
 }
 
-
 .crosspuzzle-cell.crosspuzzle-cell-incorrect {
     color:red;
     font-weight:bold;
@@ -148,4 +147,16 @@ a.crosspuzzle-cell {
     border:2px solid black;
     padding:20px;
     text-align:center;
+}
+
+.crosspuzzle-cell-rightarrow {
+    text-align:right;
+    padding-right:4px;
+    font-size:180%;
+}
+
+.crosspuzzle-cell-leftarrow {
+    text-align:left;
+    padding-left:4px;
+    font-size:180%;
 }
