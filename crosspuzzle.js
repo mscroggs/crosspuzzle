@@ -41,6 +41,30 @@ function crosspuzzle_entry_is_black(entry) {
 }
 
 function crosspuzzle_update_cell_styling(id) {
+    if (crosspuzzle_solution[id] !== null && Object.keys(crosspuzzle_entered[id]).length >= Object.keys(crosspuzzle_solution[id]).length - Object.keys(crosspuzzle_revealed[id]).length) {
+        var correct = true;
+        for (var i in crosspuzzle_solution[id]) {
+            var pos = crosspuzzle_solution[id][i][0];
+            var c = crosspuzzle_solution[id][i][1];
+            if (!(crosspuzzle_n(id, pos) in crosspuzzle_revealed[id]) && (!(crosspuzzle_n(id, pos) in crosspuzzle_entered[id]) || crosspuzzle_entered[id][crosspuzzle_n(id, pos)] != c)) {
+                correct = false;
+                break;
+            }
+        }
+        if (correct) {
+            document.getElementById("crosspuzzle-" + id + "-congratulations").style.pointerEvents = "all";
+            document.getElementById("crosspuzzle-" + id + "-congratulations").style.opacity = 1;
+            for (var i in crosspuzzle_solution[id]) {
+                if (!(i in crosspuzzle_checked[id])) {
+                    crosspuzzle_checked[id][i] = [crosspuzzle_solution[id][i][1], true];
+                }
+            }
+            if (id == crosspuzzle_active_cell[0]) {
+                crosspuzzle_active_cell = [null, [null, null], "a"];
+            }
+        }
+    }
+
     for (var id2 in crosspuzzle_solution) {
         document.getElementById("crosspuzzle-" + id2 + "-button-clear-this").disabled = true;
         if (crosspuzzle_solution[id2] !== null) {
@@ -114,22 +138,6 @@ function crosspuzzle_update_cell_styling(id) {
     for (var i in crosspuzzle_revealed[id]) {
         var pos = crosspuzzle_solution[id][i][0];
         crosspuzzle_get_cell(id, pos).className += " crosspuzzle-cell-correct";
-    }
-
-    if (crosspuzzle_solution[id] !== null && Object.keys(crosspuzzle_entered[id]).length >= Object.keys(crosspuzzle_solution[id]).length - Object.keys(crosspuzzle_revealed[id]).length) {
-        var correct = true;
-        for (var i in crosspuzzle_solution[id]) {
-            var pos = crosspuzzle_solution[id][i][0];
-            var c = crosspuzzle_solution[id][i][1];
-            if (!(crosspuzzle_n(id, pos) in crosspuzzle_revealed[id]) && (!(crosspuzzle_n(id, pos) in crosspuzzle_entered[id]) || crosspuzzle_entered[id][crosspuzzle_n(id, pos)] != c)) {
-                correct = false;
-                break;
-            }
-        }
-        if (correct) {
-            document.getElementById("crosspuzzle-" + id + "-congratulations").style.pointerEvents = "all";
-            document.getElementById("crosspuzzle-" + id + "-congratulations").style.opacity = 1;
-        }
     }
 }
 
