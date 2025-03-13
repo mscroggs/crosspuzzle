@@ -114,6 +114,7 @@ a.crosspuzzle-cell {
     pointer-events:none;
     font-size:60%;
     padding:2px;
+    text-align:left;
 }
 
 .crosspuzzle-clue-active {

@@ -583,6 +583,10 @@ function crosspuzzle(id, data) {
     }
     content += "</div>";
 
+    if ("extra_text" in data) {
+        content += data["extra_text"];
+    }
+
     c.innerHTML = content;
     crosspuzzle_update_cell_styling(id);
     crosspuzzle_add_input_listener(document.getElementById("crosspuzzle-" + id + "-input"));
