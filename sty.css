@@ -188,4 +188,9 @@ a.crosspuzzle-cell {
     -moz-transition: opacity 0.3s ease-in;
     -o-transition: opacity 0.3s ease-in;
     transition: opacity 0.3s ease-in;
+    background-color:white;
+    margin:auto;
+    border:2px solid black;
+    padding:20px;
+    text-align:center;
 }

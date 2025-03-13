@@ -365,7 +365,7 @@ function crosspuzzle(id, data) {
     content += "}\n";
     content += "</style>";
     content += "<div id='crosspuzzle-" + id + "-grid' class='crosspuzzle-grid'>"
-    content += "<div id='crosspuzzle-" + id + "-congratulations' class='crosspuzzle-congratulations' style='z-index:10;grid-row:1 / span " + crosspuzzle_sizes[id][1] + ";grid-column:1 / span " + (crosspuzzle_sizes[id][0] + 2) + ";background-color:white;margin:20px 50px;border:2px solid black;padding:5px;text-align:center;opacity:0;pointer-events:none'>"
+    content += "<div id='crosspuzzle-" + id + "-congratulations' class='crosspuzzle-congratulations' style='z-index:10;grid-row:1 / span " + crosspuzzle_sizes[id][1] + ";grid-column:1 / span " + (crosspuzzle_sizes[id][0] + 2) + ";opacity:0;pointer-events:none'>"
     content += "Congratulations! You solved the puzzle!<br /><br /><span id='crosspuzzle-" + id + "-congratulations-more-info'></span>"
     content += "<a href='javascript:crosspuzzle_hide_congrats(\"" + id + "\")'>View solution</a>"
     content += "</div>"
