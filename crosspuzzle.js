@@ -194,7 +194,7 @@ function crosspuzzle_clear_this(id) {
 function crosspuzzle_clear_all(id) {
     for (var i in crosspuzzle_entered[id]) {
         if (!(i in crosspuzzle_revealed[id])) {
-            crosspuzzle_get_cell(id, crosspuzzle_solution[id][i][0]).innerHTML = "";
+            crosspuzzle_get_cell(id, [Math.floor(i / crosspuzzle_sizes[id][1]), i % crosspuzzle_sizes[id][1]]).innerHTML = "";
             delete crosspuzzle_entered[id][i];
             if (i in crosspuzzle_checked[id]) {
                 delete crosspuzzle_checked[id][i];
