@@ -13,7 +13,7 @@ jobs:
       - name: Make website directory
         run: |
           mkdir website
-          cp crosspuzzle.js sty.css favicon.ico website/
+          cp crosspuzzle.js crosspuzzle.css favicon.ico website/
           cp examples.html website/index.html
       - name: Setup Pages
         uses: actions/configure-pages@v3
