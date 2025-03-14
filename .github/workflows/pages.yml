@@ -46,8 +46,7 @@ jobs:
             git checkout $tag
             cp *.js *.css website/$tag
             r="<h2>$tag</h2>\n"
-            r="$r<p><a href='https://github.com/mscroggs/crosspuzzle/releases/tag/$tag'>$tag on GitHub</a></p>\n"
-            r="$r<p>To include crosspuzzle $tag on your web page, include the following in your <code>&lt;head&gt;</code>:</p>\n"
+            r="$r<p>To include <a href='https://github.com/mscroggs/crosspuzzle/releases/tag/$tag'>crosspuzzle $tag</a> on your web page, include the following in your <code>&lt;head&gt;</code>:</p>\n"
             r="$r<div style='margin:0px 40px;font-size:80%%'><code>\n"
             next=""
             for js_file in $(ls *.js)
