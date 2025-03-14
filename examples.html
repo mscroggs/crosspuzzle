@@ -128,10 +128,17 @@ crosspuzzle("fun-puzzle", {
 <h2>How these puzzle widgets are generated</h2>
 <p>All of the above puzzle widgets were created using the <a href='https://github.com/mscroggs/crosspuzzle'>crosspuzzle</a>
 Javascript library, written by <a href='https://mscroggs.co.uk'>Matthew Scroggs</a>.
-In the <code>&lt;head&gt;</code> part of the html file, we include crosspuzzle.js:</p>
-<div style='margin:0px 40px'>
-<code>&lt;script type='text/javascript' src='crosspuzzle.js'&gt;&lt;/script&gt;</code>
-</div>
+In the <code>&lt;head&gt;</code> part of the html file, we include crosspuzzle.js and crosspuzzle.css:</p>
+<div style='margin:0px 40px'><code>
+&lt;script type='text/javascript' src='crosspuzzle.js'&gt;&lt;/script&gt;<br />
+&lt;link type='text/css' rel='stylesheet' src='crosspuzzle.css' /&gt;
+</code></div>
+<p>Alternatively, you can load these files directly from GitHub pages:</p>
+<div style='margin:0px 40px'><code>
+&lt;script type='text/javascript' src='https://mscroggs.github.io/crosspuzzle/crosspuzzle.js'&gt;&lt;/script&gt;<br />
+&lt;link type='text/css' rel='stylesheet' src='https://mscroggs.github.io/crosspuzzle/crosspuzzle.css' /&gt;
+</code></div>
+
 <p>Each puzzle is then generated via a call to the function <code>crosspuzzle</code>.</p>
 
 <h3>An example crossword</h3>
