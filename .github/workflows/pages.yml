@@ -23,7 +23,7 @@ jobs:
           start=${examples%$"<div class='main'>"*}
           echo "$start" > website/releases.html
           printf "<div class='main'>\n<h1>Releases</h1>\n" >> website/releases.html
-          printf "<p><a href='/'>&larr; Back to usage examples</a></p>\n" >> website/releases.html
+          printf "<p><a href='/crosspuzzle'>&larr; Back to usage examples</a></p>\n" >> website/releases.html
           printf "<p>The latest version of crosspuzzle can be included on your web page by including the following in your <code>&lt;head&gt;</code>:</p>\n" >> website/releases.html
           printf "<div style='margin:0px 40px'><code>\n" >> website/releases.html
           next=""
