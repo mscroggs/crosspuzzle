@@ -12,18 +12,27 @@ jobs:
       - uses: actions/checkout@v4
       - name: fetch tags
         run: git fetch --tags origin
-      - name: Make website directory
-        run: mkdir website
-      - name: Put files in website directory
+      - name: Copy latest to website
         run: |
+          mkdir website
           cp crosspuzzle.js crosspuzzle.css favicon.ico website/
           cp examples.html website/index.html
+      - name: Copy releases to website
+        run: |
+          examples=`cat examples.html`
+          start=${examples%$"<div class='main'>"*}
+          echo "$start" > website/releases.html
+          printf "<div class='main'>\n" >> website/releases.html
           for tag in $(git tag -l v*.*.*)
           do
             mkdir website/$tag
             git checkout $tag
             cp *.js *.css website/$tag
+            printf "<h1>" >> website/releases.html
+            echo "$tag" >> website/releases.html
+            printf "</h1>\n" >> website/releases.html
           done
+          printf "</div>\n</body>\n</html>\n" >> website/releases.html
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
