@@ -42,12 +42,16 @@ with open("examples.html") as f:
 pre, post = content.split("Crosspuzzle v", 1)
 post = post.split(" ", 1)[1]
 content = f"{pre}Crosspuzzle v{version} {post}"
-pre, post = content.split("crosspuzzle.css?v=", 1)
-post = post.split("'", 1)[1]
-content = f"{pre}Crosspuzzle.css?v={version}' {post}"
-pre, post = content.split("crosspuzzle.js?v=", 1)
-post = post.split("'", 1)[1]
-content = f"{pre}Crosspuzzle.js?v={version}' {post}"
+parts = content.split("?v=")
+content = parts[0]
+for p in parts[1:]:
+    p = p.split("'", 1)[1]
+    content += f"?v={version}'{p}"
+parts = content.split("https://mscroggs.github.io/crosspuzzle/v")
+content = parts[0]
+for p in parts[1:]:
+    p = p.split("/", 1)[1]
+    content += f"https://mscroggs.github.io/crosspuzzle/v{version}/{p}"
 with open("examples.html", "w") as f:
     f.write(content)
 
