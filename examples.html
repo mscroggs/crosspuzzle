@@ -74,7 +74,8 @@ library that can create interactive crossword/crossnumber website widgets.</p>
 <a href='https://chalkdustmagazine.com/read/issue-21'>issue 21 of Chalkdust</a>.</p>
 <div id='crossword1'></div>
 <script type='text/javascript'>
-crosspuzzle("crossword1", {
+crosspuzzle({
+    "id": "crossword1",
     "grid": ["*SUM*", "SENOR", "IV*DG", "NEPAL", "*NIL*"],
     "clues": {"across": ["Add up.", "Spanish mister.", "Roman four.", "Non-continuous finite element.", "Country with non-rectangular flag.", "Footballer's zero."],
               "down": ["English sept.", "French one.", "Most common.", "opp &div; hyp.", "Rugeley Trent Valley.", "Greek p."]}
@@ -86,7 +87,8 @@ crosspuzzle("crossword1", {
 <a href='https://chalkdustmagazine.com/read/issue-15'>issue 15 of Chalkdust</a>.</p>
 <div id='crossnumber1'></div>
 <script type='text/javascript'>
-crosspuzzle("crossnumber1", {
+crosspuzzle({
+    "id": "crossnumber1",
     "grid": ["???*???", "?*???*?", "???*???"],
     "clues": {"across": ["2D&div;2.", "1D&times;2.", "2D&times;2.", "3A&times;2.","3A&div;3."],
               "down": ["3A&div;2.", "1A&times;2.", "3D&times;1.", "2D&div;1."]},
@@ -98,7 +100,8 @@ crosspuzzle("crossnumber1", {
 <p>This example is the first ever crossword puzzle, written by Arthur Wynne in 1913.</p>
 <div id='fun-puzzle'></div>
 <script type='text/javascript'>
-crosspuzzle("fun-puzzle", {
+crosspuzzle({
+    "id": "fun-puzzle",
     "grid": ["------R------", "-----FUN-----", "----SALES----", "---RECEIPT---", "--MERE-FARM--", "-DOVE---RAIL-", "MORE-----DRAW", "-HARD---TIED-", "--LION-SAND--", "---EVENING---", "----EVADE----", "-----ARE-----", "------D------"],
     "revealed": ["------?------", "-----FUN-----", "----?????----", "---???????---", "--????-????--", "-????---????-", "????-----????", "-????---????-", "--????-????--", "---???????---", "----?????----", "-----???-----", "------?------"],
     "clues": {"across": [":HIDDEN", "What bargain hunters enjoy.", "A written acknowledgment.", "Such and nothing more.", "To cultivate.", "A bird.", "A bar of wood or iron.", "Opposed to less.", "What artists learn to do.", "What this puzzle is.", "Fastened.", "An animal of prey.", "Found on the seashore.", "The close of a day.", "To elude.", "The plural of is."],
@@ -150,7 +153,8 @@ In the <code>&lt;head&gt;</code> part of the html file, we include crosspuzzle.j
 <div style='margin:0px 40px'>
 <code>
 &lt;script type='text/javascript'&gt;<br />
-crosspuzzle("crossword1", {<br />
+crosspuzzle({<br />
+&nbsp;&nbsp;&nbsp;&nbsp;"id": "crossword1",<br />
 &nbsp;&nbsp;&nbsp;&nbsp;"grid": ["*SUM*", "SENOR", "IV*DG", "NEPAL", "*NIL*"],<br />
 &nbsp;&nbsp;&nbsp;&nbsp;"clues": {"across": ["Add up.", "Spanish mister.", "Roman four.",<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Non-continuous finite element.", "Country with non-rectangular flag.",<br />
@@ -161,12 +165,12 @@ crosspuzzle("crossword1", {<br />
 &lt;/script&gt;
 </code>
 </div>
-<p>The first input to the function is the id of the empty div we created above: crosspuzzle
-will place the widget inside this div. This will overwrite the contents of the div, so content
-that should be displayed if crosspuzzle fails to load can be placed in the div.</p>
-<p>The second input is Javascript Object that includes
-the details of the puzzle</p>
+<p>The input to the function is a Javascript Object that includes
+the details of the puzzle:</p>
 <ul>
+<li>crosspuzzle will place the widget inside the
+element with id set using the key <code>"id"</code>. This will overwrite the contents of the element, so content
+that should be displayed if crosspuzzle fails to load can be placed in the element.</li>
 <li>the key <code>"grid"</code> is used to input the crossword grid
 as a list of rows. <code>*</code> is used to denote black squares</li>
 <li>the key <code>"clues"</code> is used to input the clues, with the across
@@ -184,7 +188,8 @@ and down clues given in numerical order.</li>
 <div style='margin:0px 40px'>
 <code>
 &lt;script type='text/javascript'&gt;<br />
-crosspuzzle("crossnumber1", {<br />
+crosspuzzle({<br />
+&nbsp;&nbsp;&nbsp;&nbsp;"id": "crossnumber1",<br />
 &nbsp;&nbsp;&nbsp;&nbsp;"grid": ["???*???", "?*???*?", "???*???"],<br />
 &nbsp;&nbsp;&nbsp;&nbsp;"clues": {"across": ["2D&amp;div;2.", "1D&amp;times;2.", "2D&amp;times;2.", "3A&amp;times;2.","3A&amp;div;3."],<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"down": ["3A&amp;div;2.", "1A&amp;times;2.", "3D&amp;times;1.", "2D&amp;div;1."]},<br />
@@ -207,7 +212,8 @@ set which characters are valid for each white cell in the puzzle.</p>
 <div style='margin:0px 40px'>
 <code>
 &ltscript type='text/javascript'&gt;<br />
-crosspuzzle("fun-puzzle", {<br />
+crosspuzzle({<br />
+&nbsp;&nbsp;&nbsp;&nbsp;"id": "fun-puzzle",<br />
 &nbsp;&nbsp;&nbsp;&nbsp;"grid": ["------R------", "-----FUN-----", ...],<br />
 &nbsp;&nbsp;&nbsp;&nbsp;"revealed": ["------?------", "-----FUN-----", "----?????----", ...],<br />
 &nbsp;&nbsp;&nbsp;&nbsp;"clues": {"across": [":HIDDEN", "What bargain hunters enjoy.", ...],<br />
@@ -248,6 +254,7 @@ the solution is still visible by viewing the source of the pade)</li>
 <thead>
 <tr><td>Key</td><td>Required</td><td>Default value</td><td>Purpose</td></tr>
 </thead>
+<tr><td><code>"id"</code></td><td>&check;</td><td></td><td>The id of the HTML element where the puzzle should be placed</td></tr>
 <tr><td><code>"grid"</code></td><td>&check;</td><td></td><td>The puzzle grid. <code>*</code> can be used for black cells, <code>-</code> can be used for missing cells, <code>?</code> can be used for other cells if check and reveal buttons are not desired</td></tr>
 <tr><td><code>"clues"</code></td><td>&check;</td><td></td><td>The puzzle clues. <code>:HIDDEN</code> can be used to hide a clue</td></tr>
 <tr><td><code>"valid_chars"</code></td><td></td><td><code>"ABCDEFGHIJKLMNOPQRSTUVWXYZ"</code></td><td>Valid characters for each cell</td></tr>

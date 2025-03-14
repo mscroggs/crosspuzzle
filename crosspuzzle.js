@@ -273,7 +273,12 @@ function crosspuzzle_hide_congrats(id) {
     document.getElementById("crosspuzzle-" + id + "-congratulations").style.opacity = 0;
 }
 
-function crosspuzzle(id, data) {
+function crosspuzzle(data) {
+    if(!("id" in data)) {
+        c.innerHTML = "<span style='color:red'>Error: no id</span>";
+        return;
+    }
+    var id = data["id"]
     var c = document.getElementById(id);
     var content = "";
     crosspuzzle_all_white_cells[id] = [];

@@ -26,7 +26,8 @@ for example:
 ```html
 <div id='crossword1'></div>
 <script type='text/javascript'>
-crosspuzzle("crossword1", {
+crosspuzzle({
+    "id": "crossword1",
     "grid": ["*SUM*", "SENOR", "IV*DG", "NEPAL", "*NIL*"],
     "clues": {"across": ["Add up.", "Spanish mister.", "Roman four.", "Non-continuous finite element.", "Country with non-rectangular flag.", "Footballer's zero."],
               "down": ["English sept.", "French one.", "Most common.", "opp &div; hyp.", "Rugeley Trent Valley.", "Greek p."]}
