@@ -19,6 +19,13 @@ Alternatively, you can load the latest version of these these files directly fro
 <link type='text/css' rel='stylesheet' src='https://mscroggs.github.io/crosspuzzle/crosspuzzle.css' />
 ```
 
+Or you can load the latest release of crosspuzzle directly from GitHub pages:
+
+```html
+<script type='text/javascript' src='https://mscroggs.github.io/crosspuzzle/v0.4.0/crosspuzzle.js'></script> 
+<link type='text/css' rel='stylesheet' src='https://mscroggs.github.io/crosspuzzle/v0.4.0/crosspuzzle.css' />
+```
+
 Puzzles can then be created by making an empty div, then running the `crosspuzzle` function,
 for example:
 
