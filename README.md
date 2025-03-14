@@ -12,13 +12,12 @@ crosspuzzle can be used by uploading crosspuzzle.js and crosspuzzle.css to your 
 <link type='text/css' rel='stylesheet' src='crosspuzzle.css' />
 ```
 
-Alternatively, you can load these files directly from GitHub pages:
+Alternatively, you can load the latest version of these these files directly from GitHub pages:
 
 ```html
 <script type='text/javascript' src='https://mscroggs.github.io/crosspuzzle/crosspuzzle.js'></script> 
 <link type='text/css' rel='stylesheet' src='https://mscroggs.github.io/crosspuzzle/crosspuzzle.css' />
 ```
-
 
 Puzzles can then be created by making an empty div, then running the `crosspuzzle` function,
 for example:

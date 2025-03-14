@@ -10,11 +10,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: fetch tags
+        run: git fetch --tags origin
       - name: Make website directory
+        run: mkdir website
+      - name: Put files in website directory
         run: |
-          mkdir website
           cp crosspuzzle.js crosspuzzle.css favicon.ico website/
           cp examples.html website/index.html
+          for tag in $(git tag -l v*.*.*)
+          do
+            mkdir website/$tag
+            git checkout $tag
+            cp *.js *.css website/$tag
+          done
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
