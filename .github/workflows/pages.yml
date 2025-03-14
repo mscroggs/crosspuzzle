@@ -38,7 +38,7 @@ jobs:
             next="<br />\n"
           done
           printf "\n</code></div>\n" >> website/releases.html
-          prinf "<p>Note that this version of crosspuzzle used if you in this case will automatically update to the latest version.</p>" >> website/releases.html
+          printf "<p>Note that this version of crosspuzzle used if you in this case will automatically update to the latest version.</p>" >> website/releases.html
           releases=""
           for tag in $(git tag -l v*.*.*)
           do
