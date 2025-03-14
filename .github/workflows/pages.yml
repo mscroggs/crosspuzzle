@@ -25,7 +25,7 @@ jobs:
           printf "<div class='main'>\n<h1>Releases</h1>\n" >> website/releases.html
           printf "<p><a href='/crosspuzzle'>&larr; Back to usage examples</a></p>\n" >> website/releases.html
           printf "<p>The latest version of crosspuzzle can be included on your web page by including the following in your <code>&lt;head&gt;</code>:</p>\n" >> website/releases.html
-          printf "<div style='margin:0px 40px;font-size:80%'><code>\n" >> website/releases.html
+          printf "<div style='margin:0px 40px;font-size:80%%'><code>\n" >> website/releases.html
           next=""
           for js_file in $(ls *.js)
           do
@@ -48,7 +48,7 @@ jobs:
             r="<h2>$tag</h2>\n"
             r="$r<p><a href='https://github.com/mscroggs/crosspuzzle/releases/tag/$tag'>$tag on GitHub</a></p>\n"
             r="$r<p>To include crosspuzzle $tag on your web page, include the following in your <code>&lt;head&gt;</code>:</p>\n"
-            r="$r<div style='margin:0px 40px;font-size:80%'><code>\n"
+            r="$r<div style='margin:0px 40px;font-size:80%%'><code>\n"
             next=""
             for js_file in $(ls *.js)
             do
