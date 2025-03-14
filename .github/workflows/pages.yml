@@ -22,16 +22,32 @@ jobs:
           examples=`cat examples.html`
           start=${examples%$"<div class='main'>"*}
           echo "$start" > website/releases.html
-          printf "<div class='main'>\n" >> website/releases.html
+          printf "<div class='main'>\n<h1>Releases</h1>\n" >> website/releases.html
+          releases=""
           for tag in $(git tag -l v*.*.*)
           do
             mkdir website/$tag
             git checkout $tag
             cp *.js *.css website/$tag
-            printf "<h1>" >> website/releases.html
-            echo "$tag" >> website/releases.html
-            printf "</h1>\n" >> website/releases.html
+            r="<h2>$tag</h2>\n"
+            r="$r<p><a href='https://github.com/mscroggs/crosspuzzle/releases/tag/$tag'>$tag on GitHub</a></p>\n"
+            r="$r<p>To include crosspuzzle $tag on your web page, include the following in your <code>&lt;head&gt;</code>:</p>\n"
+            r="$r<div style='margin:0px 40px'><code>\n"
+            next=""
+            for js_file in $(ls *.js)
+            do
+              r="$r$next&lt;script type='text/javascript' src='https://mscroggs.github.io/crosspuzzle/$tag/$js_file'&gt;&lt;/script&gt;"
+              next="<br />\n"
+            done
+            for css_file in $(ls *.css)
+            do
+              r="$r$next&lt;link type='text/css' rel='stylesheet' src='https://mscroggs.github.io/crosspuzzle/$tag/$css_file' /&gt;"
+              next="<br />\n"
+            done
+            r="$r\n</code></div>\n"
+            releases="$r$releases"
           done
+          printf "$releases" >> website/releases.html
           printf "</div>\n</body>\n</html>\n" >> website/releases.html
       - name: Setup Pages
         uses: actions/configure-pages@v3
