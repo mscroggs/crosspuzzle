@@ -577,7 +577,11 @@ function crosspuzzle(data) {
         content += "</a>";
         content += "<a " + href + " class='crosspuzzle-clue-len' id='crosspuzzle-" + id + "-clue-len-a" + i + "' style='grid-column:3 / span 1;grid-row:" + (i + 2) + " / span 1'>";
         if (clue_text != ":HIDDEN") {
-            content += "(" + alens[i] + ")";
+            if ("clue_lengths" in data && "across" in data["clue_lengths"] && i in data["clue_lengths"]["across"]) {
+                content += "(" + data["clue_lengths"]["across"][i] + ")";
+            } else {
+                content += "(" + alens[i] + ")";
+            }
         }
         content += "</a>";
     }
@@ -606,7 +610,11 @@ function crosspuzzle(data) {
         content += "</a>";
         content += "<a " + href + " class='crosspuzzle-clue-len' id='crosspuzzle-" + id + "-clue-len-d" + i + "' style='grid-column:3 / span 1;grid-row:" + (i + 2) + " / span 1'>";
         if (clue_text != ":HIDDEN") {
-            content += "(" + dlens[i] + ")";
+            if ("clue_lengths" in data && "down" in data["clue_lengths"] && i in data["clue_lengths"]["down"]) {
+                content += "(" + data["clue_lengths"]["down"][i] + ")";
+            } else {
+                content += "(" + dlens[i] + ")";
+            }
         }
         content += "</a>";
     }
