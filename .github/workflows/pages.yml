@@ -15,7 +15,7 @@ jobs:
       - name: Copy latest to website
         run: |
           mkdir website
-          cp crosspuzzle.js crosspuzzle.css favicon.ico website/
+          cp *.js *.css favicon.ico website/
           cp examples.html website/index.html
       - name: Copy releases to website
         run: |
