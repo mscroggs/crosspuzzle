@@ -20,6 +20,7 @@ var crosspuzzle_revealed = {}
 var crosspuzzle_settings = {}
 var crosspuzzle_input_version2 = true;
 var crosspuzzle_start_time = {}
+var crosspuzzle_end_time = {}
 
 function crosspuzzle_is_white(id, entry) {
     for (var i in crosspuzzle_all_white_cells[id]) {
@@ -28,6 +29,18 @@ function crosspuzzle_is_white(id, entry) {
         }
     }
     return false;
+}
+
+function crosspuzzle_start_timer(id) {
+    if (crosspuzzle_start_time[id] === null) {
+        crosspuzzle_start_time[id] = Date.now();
+        document.getElementById("crosspuzzle-" + id + "-clue-container").style.display = "grid";
+        document.getElementById("crosspuzzle-" + id + "-reveal").style.display = "block";
+        crosspuzzle_tick_timers();
+    }
+}
+function crosspuzzle_start(id) {
+    crosspuzzle_click_cell(id, crosspuzzle_clue_to_positions["cryptic21"]["a"][0][0][0], crosspuzzle_clue_to_positions["cryptic21"]["a"][0][0][1], "a");
 }
 
 function crosspuzzle_entry_is_white(entry) {
@@ -53,6 +66,12 @@ function crosspuzzle_update_cell_styling(id) {
             }
         }
         if (correct) {
+            if (id in crosspuzzle_end_time && crosspuzzle_end_time[id] === null) {
+                crosspuzzle_end_time[id] = Date.now();
+                e = document.getElementById("crosspuzzle-" + id + "-congratulations-more-info");
+                var seconds = Math.floor((crosspuzzle_end_time[id] - crosspuzzle_start_time[id]) / 1000);
+                e.innerHTML = "Time taken: " + crosspuzzle_pad2(Math.floor(seconds / 60)) + ":" + crosspuzzle_pad2(seconds % 60) + "<br /><br />";
+            }
             document.getElementById("crosspuzzle-" + id + "-congratulations").style.pointerEvents = "all";
             document.getElementById("crosspuzzle-" + id + "-congratulations").style.opacity = 1;
             for (var i in crosspuzzle_solution[id]) {
@@ -178,6 +197,7 @@ function crosspuzzle_click_cell(id, row, col, direction) {
     }
     document.getElementById("crosspuzzle-" + id + "-input").focus();
     crosspuzzle_update_cell_styling(id);
+    crosspuzzle_start_timer(id);
 }
 
 function crosspuzzle_clear_this(id) {
@@ -517,11 +537,20 @@ function crosspuzzle(data) {
     }
 
     if (crosspuzzle_settings[id]["timer"]) {
-        content += "<div class='crosspuzzle-timer' id='crosspuzzle-" + id + "-timer'>The timer will begin when you start the puzzle.</div>"
+        crosspuzzle_start_time[id] = null;
+        crosspuzzle_end_time[id] = null;
+        content += "<div class='crosspuzzle-timer' id='crosspuzzle-" + id + "-timer'>";
+        content += "Click on a clue or click the button below to start the puzzle.<br />"
+        content += "<button onclick='crosspuzzle_start(\"" + id + "\")'>Start puzzle</a>";
+        content += "</div>"
     }
 
     // Reveal and check buttons
-    content += "<div class='crosspuzzle-reveal'>";
+    content += "<div class='crosspuzzle-reveal' id='crosspuzzle-" + id + "-reveal'";
+    if (crosspuzzle_settings[id]["timer"]) {
+        content += " style='display:none'";
+    }
+    content += ">";
     content += "<button id='crosspuzzle-" + id + "-button-clear-this' onclick='crosspuzzle_clear_this(\"" + id + "\")' disabled>Clear this entry</button>";
     if (crosspuzzle_solution[id] !== null) {
         content += "<button id='crosspuzzle-" + id + "-button-check-this' onclick='crosspuzzle_check_this(\"" + id + "\")' disabled>Check this entry</button>";
@@ -573,7 +602,13 @@ function crosspuzzle(data) {
             return;
         }
     }
-    content += "<div class='crosspuzzle-clue-container' style='display:grid'>";
+    content += "<div class='crosspuzzle-clue-container' id='crosspuzzle-" + id + "-clue-container' style='"
+    if (crosspuzzle_settings[id]["timer"]) {
+        content += "display:none";
+    } else {
+        content += "display:grid";
+    }
+    content += "'>";
     content += "<div class='crosspuzzle-across' style='";
     content += "display:grid;grid-template-columns:" + nwidth + " 1fr " + lenwidth + ";grid-teplate_rows:repeat(" + (astarts.length + 1) + ", auto)'>";
     content += "<div class='crosspuzzle-clue-title' style='grid-column:1 / span 3;grid-row:1 / span 1'>Across</div>";
@@ -811,3 +846,28 @@ function crosspuzzle_add_input_listener(obj) {
         obj.value = " ";
     });
 }
+
+function crosspuzzle_pad2(n) {
+    var out = "" + n;
+    while (out.length < 2) {
+        out = "0" + out;
+    }
+    return out;
+}
+
+function crosspuzzle_tick_timers() {
+    for (var id in crosspuzzle_start_time) {
+        if (crosspuzzle_start_time[id] !== null) {
+            var e = document.getElementById("crosspuzzle-" + id + "-timer");
+            if (crosspuzzle_end_time[id] === null) {
+                var now = Date.now();
+                var seconds = Math.floor((now - crosspuzzle_start_time[id]) / 1000);
+                e.innerHTML = crosspuzzle_pad2(Math.floor(seconds / 60)) + ":" + crosspuzzle_pad2(seconds % 60);
+            } else {
+                e.innerHTML = "";
+            }
+        }
+    }
+}
+
+setInterval(crosspuzzle_tick_timers, 500);
