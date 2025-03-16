@@ -179,7 +179,9 @@ the details of the puzzle:</p>
 <ul>
 <li>crosspuzzle will place the widget inside the
 element with id set using the key <code>"id"</code>. This will overwrite the contents of the element, so content
-that should be displayed if crosspuzzle fails to load can be placed in the element.</li>
+that should be displayed if crosspuzzle fails to load can be placed in the element. This id will be
+used as the id when storing partially solved puzzles in cookies, so the same id should not be used
+for different puzzles on your site.</li>
 <li>the key <code>"grid"</code> is used to input the crossword grid
 as a list of rows. <code>*</code> is used to denote black squares.</li>
 <li>the key <code>"clues"</code> is used to input the clues, with the across

@@ -31,6 +31,62 @@ function crosspuzzle_is_white(id, entry) {
     return false;
 }
 
+function crosspuzzle_save_to_cookie(id) {
+    var d = new Date(Date.now() + 1000 * 60 * 60 * 24 * 300);
+    var data = {
+        "entered": crosspuzzle_entered[id],
+        "checked": crosspuzzle_checked[id]
+    };
+    if (id in crosspuzzle_start_time && crosspuzzle_start_time[id] !== null) {
+        if (crosspuzzle_end_time[id] === null) {
+            data["time"] = Date.now() - crosspuzzle_start_time[id];
+            data["finished"] = false;
+        } else {
+            data["time"] = crosspuzzle_end_time[id] - crosspuzzle_start_time[id];
+            data["finished"] = true;
+        }
+    }
+    var puzzle_data = JSON.stringify(data);
+    document.cookie = "crosspuzzle_" + id + "_data=" + puzzle_data + "; expires=" + d.toUTCString() + "; path=/";
+}
+
+function crosspuzzle_load_from_cookie(id) {
+    var info = null;
+    var cookies = document.cookie.split("; ");
+
+    for (var c in cookies) {
+        var cookie = cookies[c].split("=", 2);
+        if (cookie[0] == "crosspuzzle_" + id + "_data") {
+            info = cookie[1];
+            break;
+        }
+    }
+    if (info !== null) {
+        try {
+            var data = JSON.parse(info);
+        } catch (err) {
+            return;
+        }
+        crosspuzzle_entered[id] = data["entered"];
+        for (var i in data["entered"]) {
+            crosspuzzle_get_cell(id, [Math.floor(i / crosspuzzle_sizes[id][1]), i % crosspuzzle_sizes[id][1]]).innerHTML = data["entered"][i];
+        }
+        crosspuzzle_checked[id] = data["checked"];
+        if ("time" in data) {
+            crosspuzzle_start_time[id] = Date.now() - data["time"];
+            if ("finished" in data && data["finished"]) {
+                crosspuzzle_end_time[id] = Date.now();
+                var e = document.getElementById("crosspuzzle-" + id + "-congratulations-more-info");
+                var seconds = Math.floor((crosspuzzle_end_time[id] - crosspuzzle_start_time[id]) / 1000);
+                e.innerHTML = "Time taken: " + crosspuzzle_pad2(Math.floor(seconds / 60)) + ":" + crosspuzzle_pad2(seconds % 60) + "<br /><br />";
+            }
+            document.getElementById("crosspuzzle-" + id + "-clue-container").style.display = "grid";
+            document.getElementById("crosspuzzle-" + id + "-reveal").style.display = "block";
+            crosspuzzle_tick_timers();
+        }
+    }
+}
+
 function crosspuzzle_start_timer(id) {
     if (crosspuzzle_start_time[id] === null) {
         crosspuzzle_start_time[id] = Date.now();
@@ -68,7 +124,7 @@ function crosspuzzle_update_cell_styling(id) {
         if (correct) {
             if (id in crosspuzzle_end_time && crosspuzzle_end_time[id] === null) {
                 crosspuzzle_end_time[id] = Date.now();
-                e = document.getElementById("crosspuzzle-" + id + "-congratulations-more-info");
+                var e = document.getElementById("crosspuzzle-" + id + "-congratulations-more-info");
                 var seconds = Math.floor((crosspuzzle_end_time[id] - crosspuzzle_start_time[id]) / 1000);
                 e.innerHTML = "Time taken: " + crosspuzzle_pad2(Math.floor(seconds / 60)) + ":" + crosspuzzle_pad2(seconds % 60) + "<br /><br />";
             }
@@ -159,6 +215,7 @@ function crosspuzzle_update_cell_styling(id) {
         var pos = crosspuzzle_solution[id][i][0];
         crosspuzzle_get_cell(id, pos).className += " crosspuzzle-cell-correct";
     }
+    crosspuzzle_save_to_cookie(id);
 }
 
 function crosspuzzle_n(id, pos) {
@@ -681,9 +738,9 @@ function crosspuzzle(data) {
     }
 
     c.innerHTML = content;
+    crosspuzzle_load_from_cookie(id);
     crosspuzzle_update_cell_styling(id);
     crosspuzzle_add_input_listener(document.getElementById("crosspuzzle-" + id + "-input"));
-
 }
 
 function crosspuzzle_process_key(id, key_code) {
