@@ -1,5 +1,5 @@
 <!------------------------------------->
-<!-- Crosspuzzle v0.2.0              -->
+<!-- Crosspuzzle v0.5.0              -->
 <!-- Demo puzzles                    -->
 <!--                                 -->
 <!-- Created by Matthew Scroggs      -->
@@ -10,9 +10,56 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style type='text/css'>
+body {
+    font-family:sans-serif;
+    background-color:#FFA366;
+    margin:0px
+}
+
+h2 {
+    margin-top:80px;
+}
+
+.main {
+    margin:auto;
+    background-color:white;
+    margin-top:0;
+    padding:20px;
+    padding-bottom:100px;
+}
+
+thead td {
+    font-weight:bold;
+    font-size:80%;
+}
+
+table, table tr td, table tr {
+    border-collapse:collapse;
+}
+
+thead tr:last-of-type td {
+    border-bottom:2px solid #CCCCCC;
+}
+
+thead tr:first-of-type td {
+    border-top:2px solid #CCCCCC;
+}
+
+table tr:last-of-type td {
+    border-bottom:2px solid #CCCCCC;
+}
+
+td {
+    border-left:2px solid #CCCCCC;
+    border-right:2px solid #CCCCCC;
+    padding:5px 8px;
+    vertical-align:middle;
+}
+</style>
 <link rel='icon' type='image/x-icon' href='favicon.ico' />
-<link rel='stylesheet' type='text/css' href='sty.css?v=0.2.0' />
-<script type='text/javascript' src='crosspuzzle.js?v=0.2.0'></script>
+<link rel='stylesheet' type='text/css' href='crosspuzzle.css?v=0.5.0' />
+<script type='text/javascript' src='crosspuzzle.js?v=0.5.0'></script>
 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
 </head>
 <body>
@@ -27,7 +74,8 @@ library that can create interactive crossword/crossnumber website widgets.</p>
 <a href='https://chalkdustmagazine.com/read/issue-21'>issue 21 of Chalkdust</a>.</p>
 <div id='crossword1'></div>
 <script type='text/javascript'>
-crosspuzzle("crossword1", {
+crosspuzzle({
+    "id": "crossword1",
     "grid": ["*SUM*", "SENOR", "IV*DG", "NEPAL", "*NIL*"],
     "clues": {"across": ["Add up.", "Spanish mister.", "Roman four.", "Non-continuous finite element.", "Country with non-rectangular flag.", "Footballer's zero."],
               "down": ["English sept.", "French one.", "Most common.", "opp &div; hyp.", "Rugeley Trent Valley.", "Greek p."]},
@@ -40,7 +88,8 @@ crosspuzzle("crossword1", {
 <a href='https://chalkdustmagazine.com/read/issue-15'>issue 15 of Chalkdust</a>.</p>
 <div id='crossnumber1'></div>
 <script type='text/javascript'>
-crosspuzzle("crossnumber1", {
+crosspuzzle({
+    "id": "crossnumber1",
     "grid": ["???*???", "?*???*?", "???*???"],
     "clues": {"across": ["2D&div;2.", "1D&times;2.", "2D&times;2.", "3A&times;2.","3A&div;3."],
               "down": ["3A&div;2.", "1A&times;2.", "3D&times;1.", "2D&div;1."]},
@@ -52,7 +101,8 @@ crosspuzzle("crossnumber1", {
 <p>This example is the first ever crossword puzzle, written by Arthur Wynne in 1913.</p>
 <div id='fun-puzzle'></div>
 <script type='text/javascript'>
-crosspuzzle("fun-puzzle", {
+crosspuzzle({
+    "id": "fun-puzzle",
     "grid": ["------R------", "-----FUN-----", "----SALES----", "---RECEIPT---", "--MERE-FARM--", "-DOVE---RAIL-", "MORE-----DRAW", "-HARD---TIED-", "--LION-SAND--", "---EVENING---", "----EVADE----", "-----ARE-----", "------D------"],
     "revealed": ["------?------", "-----FUN-----", "----?????----", "---???????---", "--????-????--", "-????---????-", "????-----????", "-????---????-", "--????-????--", "---???????---", "----?????----", "-----???-----", "------?------"],
     "clues": {"across": [":HIDDEN", "What bargain hunters enjoy.", "A written acknowledgment.", "Such and nothing more.", "To cultivate.", "A bird.", "A bar of wood or iron.", "Opposed to less.", "What artists learn to do.", "What this puzzle is.", "Fastened.", "An animal of prey.", "Found on the seashore.", "The close of a day.", "To elude.", "The plural of is."],
@@ -82,10 +132,24 @@ crosspuzzle("fun-puzzle", {
 <h2>How these puzzle widgets are generated</h2>
 <p>All of the above puzzle widgets were created using the <a href='https://github.com/mscroggs/crosspuzzle'>crosspuzzle</a>
 Javascript library, written by <a href='https://mscroggs.co.uk'>Matthew Scroggs</a>.
-In the <code>&lt;head&gt;</code> part of the html file, we include crosspuzzle.js:</p>
-<div style='margin:0px 40px'>
-<code>&lt;script type='text/javascript' src='crosspuzzle.js'&gt;&lt;/script&gt;</code>
-</div>
+In the <code>&lt;head&gt;</code> part of the html file, we include crosspuzzle.js and crosspuzzle.css:</p>
+<div style='margin:0px 40px'><code>
+&lt;script type='text/javascript' src='crosspuzzle.js'&gt;&lt;/script&gt;<br />
+&lt;link type='text/css' rel='stylesheet' src='crosspuzzle.css' /&gt;
+</code></div>
+<p>Alternatively, you can load the latest version of these files directly from GitHub pages:</p>
+<div style='margin:0px 40px'><code>
+&lt;script type='text/javascript' src='https://mscroggs.github.io/crosspuzzle/crosspuzzle.js'&gt;&lt;/script&gt;<br />
+&lt;link type='text/css' rel='stylesheet' src='https://mscroggs.github.io/crosspuzzle/crosspuzzle.css' /&gt;
+</code></div>
+<p>Or you can load the latest release of crosspuzzle directly from GitHub pages:</p>
+<div style='margin:0px 40px'><code>
+&lt;script type='text/javascript' src='https://mscroggs.github.io/crosspuzzle/v0.5.0/crosspuzzle.js'&gt;&lt;/script&gt;<br />
+&lt;link type='text/css' rel='stylesheet' src='https://mscroggs.github.io/crosspuzzle/v0.5.0/crosspuzzle.css' /&gt;
+</code></div>
+
+<p>Details of how to include any release of crosspuzzle can be found at <a href='https://mscroggs.github.io/crosspuzzle/releases'>mscroggs.github.io/crosspuzzle/releases</a></p>
+
 <p>Each puzzle is then generated via a call to the function <code>crosspuzzle</code>.</p>
 
 <h3>An example crossword</h3>
@@ -97,7 +161,8 @@ In the <code>&lt;head&gt;</code> part of the html file, we include crosspuzzle.j
 <div style='margin:0px 40px'>
 <code>
 &lt;script type='text/javascript'&gt;<br />
-crosspuzzle("crossword1", {<br />
+crosspuzzle({<br />
+&nbsp;&nbsp;&nbsp;&nbsp;"id": "crossword1",<br />
 &nbsp;&nbsp;&nbsp;&nbsp;"grid": ["*SUM*", "SENOR", "IV*DG", "NEPAL", "*NIL*"],<br />
 &nbsp;&nbsp;&nbsp;&nbsp;"clues": {"across": ["Add up.", "Spanish mister.", "Roman four.",<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Non-continuous finite element.", "Country with non-rectangular flag.",<br />
@@ -109,10 +174,12 @@ crosspuzzle("crossword1", {<br />
 &lt;/script&gt;
 </code>
 </div>
-<p>The first input to the function is the id of the empty div we created above: crosspuzzle
-will place the widget inside this div. The second input is Javascript Object that includes
-the details of the puzzle</p>
+<p>The input to the function is a Javascript Object that includes
+the details of the puzzle:</p>
 <ul>
+<li>crosspuzzle will place the widget inside the
+element with id set using the key <code>"id"</code>. This will overwrite the contents of the element, so content
+that should be displayed if crosspuzzle fails to load can be placed in the element.</li>
 <li>the key <code>"grid"</code> is used to input the crossword grid
 as a list of rows. <code>*</code> is used to denote black squares.</li>
 <li>the key <code>"clues"</code> is used to input the clues, with the across
@@ -131,7 +198,8 @@ and down clues given in numerical order.</li>
 <div style='margin:0px 40px'>
 <code>
 &lt;script type='text/javascript'&gt;<br />
-crosspuzzle("crossnumber1", {<br />
+crosspuzzle({<br />
+&nbsp;&nbsp;&nbsp;&nbsp;"id": "crossnumber1",<br />
 &nbsp;&nbsp;&nbsp;&nbsp;"grid": ["???*???", "?*???*?", "???*???"],<br />
 &nbsp;&nbsp;&nbsp;&nbsp;"clues": {"across": ["2D&amp;div;2.", "1D&amp;times;2.", "2D&amp;times;2.", "3A&amp;times;2.","3A&amp;div;3."],<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"down": ["3A&amp;div;2.", "1A&amp;times;2.", "3D&amp;times;1.", "2D&amp;div;1."]},<br />
@@ -157,7 +225,8 @@ is complete once a character has been entered into each cell.
 <div style='margin:0px 40px'>
 <code>
 &ltscript type='text/javascript'&gt;<br />
-crosspuzzle("fun-puzzle", {<br />
+crosspuzzle({<br />
+&nbsp;&nbsp;&nbsp;&nbsp;"id": "fun-puzzle",<br />
 &nbsp;&nbsp;&nbsp;&nbsp;"grid": ["------R------", "-----FUN-----", ...],<br />
 &nbsp;&nbsp;&nbsp;&nbsp;"revealed": ["------?------", "-----FUN-----", "----?????----", ...],<br />
 &nbsp;&nbsp;&nbsp;&nbsp;"clues": {"across": [":HIDDEN", "What bargain hunters enjoy.", ...],<br />
@@ -198,17 +267,21 @@ the solution is still visible by viewing the source of the pade).</li>
 <thead>
 <tr><td>Key</td><td>Required</td><td>Default value</td><td>Purpose</td></tr>
 </thead>
+<tr><td><code>"id"</code></td><td>&check;</td><td></td><td>The id of the HTML element where the puzzle should be placed</td></tr>
 <tr><td><code>"grid"</code></td><td>&check;</td><td></td><td>The puzzle grid. <code>*</code> can be used for black cells, <code>-</code> can be used for missing cells, <code>?</code> can be used for other cells if check and reveal buttons are not desired</td></tr>
 <tr><td><code>"clues"</code></td><td>&check;</td><td></td><td>The puzzle clues. <code>:HIDDEN</code> can be used to hide a clue</td></tr>
 <tr><td><code>"valid_chars"</code></td><td></td><td><code>"ABCDEFGHIJKLMNOPQRSTUVWXYZ"</code></td><td>Valid characters for each cell</td></tr>
 <tr><td><code>"revealed"</code></td><td></td><td></td><td>Characters that are revealed at the start of solving</td></tr>
 <tr><td><code>"clue_numbers"</code></td><td></td><td></td><td>The numbers used for each clue in the clue list</td></tr>
+<tr><td><code>"clue_lengths"</code></td><td></td><td></td><td>The lengths of some clues; can be used to use for example (3,4) as the length instead of (7)</td></tr>
 <tr><td><code>"custom_numbering"</code></td><td></td><td></td><td>The numbers that appear in the grid cells</td></tr>
+<tr><td><code>"arrows"</code></td><td></td><td></td><td>Rows that arrows should be displayed at either end of</td></tr>
 <tr><td><code>"clue_number_width"</code></td><td></td><td>35px</td><td>The width of the clue column in the clue list</td></tr>
 <tr><td><code>"clue_length_width"</code></td><td></td><td>35px</td><td>The width of the clue column in the clue list</td></tr>
 <tr><td><code>"cell_size"</code></td><td></td><td>35px</td><td>The width and height of each cell</td></tr>
 <tr><td><code>"show_reveal_button"</code></td><td></td><td><code>true</code></td><td>Shows/hides the reveal buttons</td></tr>
 <tr><td><code>"timer"</code></td><td></td><td><code>true</code></td><td>Shows/hides the timer</td></tr>
+<tr><td><code>"extra_text"</code></td><td></td><td><code>""</code></td><td>Text to include in the div below the puzzle</td></tr>
 </table>
 
 <p>Custom styles can be applied to all the elements that make up crosspuzzle's puzzles. The
@@ -238,6 +311,8 @@ following style classes can be used:</p>
 <tr><td>crosspuzzle-clue-len</td><td>The length of a clues in a table of clues</td></tr>
 <tr><td>crosspuzzle-clue-active</td><td>A clue in a table of clues that is currently being entered</td></tr>
 <tr><td>crosspuzzle-congratulations</td><td>The congratulations screen the appears when the puzzle is finished</td></tr>
+<tr><td>crosspuzzle-cell-rightarrow</td><td>Cell containing a right arrow</td></tr>
+<tr><td>crosspuzzle-cell-leftarrow</td><td>Cell containing a left arrow</td></tr>
 </table>
 </div>
 </body>

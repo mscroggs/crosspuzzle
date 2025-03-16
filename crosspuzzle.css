@@ -1,5 +1,5 @@
 /***********************************/
-/* Crosspuzzle v0.2.0              */
+/* Crosspuzzle v0.5.0              */
 /* Default style file              */
 /*                                 */
 /* Created by Matthew Scroggs      */
@@ -49,52 +49,6 @@
     display:grid;
 }
 
-body {
-    font-family:sans-serif;
-    background-color:#FFA366;
-    margin:0px
-}
-
-h2 {
-    margin-top:80px;
-}
-
-.main {
-    margin:auto;
-    background-color:white;
-    margin-top:0;
-    padding:20px;
-    padding-bottom:100px;
-}
-
-thead td {
-    font-weight:bold;
-    font-size:80%;
-}
-
-table, table tr td, table tr {
-    border-collapse:collapse;
-}
-
-thead tr:last-of-type td {
-    border-bottom:2px solid #CCCCCC;
-}
-
-thead tr:first-of-type td {
-    border-top:2px solid #CCCCCC;
-}
-
-table tr:last-of-type td {
-    border-bottom:2px solid #CCCCCC;
-}
-
-td {
-    border-left:2px solid #CCCCCC;
-    border-right:2px solid #CCCCCC;
-    padding:5px 8px;
-    vertical-align:middle;
-}
-
 .crosspuzzle-cell {
     border:2px solid black;
     margin:-1px
@@ -139,7 +93,6 @@ a.crosspuzzle-cell {
     color:#000000;
 }
 
-
 .crosspuzzle-cell.crosspuzzle-cell-incorrect {
     color:red;
     font-weight:bold;
@@ -160,6 +113,7 @@ a.crosspuzzle-cell {
     pointer-events:none;
     font-size:60%;
     padding:2px;
+    text-align:left;
 }
 
 .crosspuzzle-clue-active {
@@ -188,4 +142,21 @@ a.crosspuzzle-cell {
     -moz-transition: opacity 0.3s ease-in;
     -o-transition: opacity 0.3s ease-in;
     transition: opacity 0.3s ease-in;
+    background-color:white;
+    margin:auto;
+    border:2px solid black;
+    padding:20px;
+    text-align:center;
+}
+
+.crosspuzzle-cell-rightarrow {
+    text-align:right;
+    padding-right:4px;
+    font-size:180%;
+}
+
+.crosspuzzle-cell-leftarrow {
+    text-align:left;
+    padding-left:4px;
+    font-size:180%;
 }

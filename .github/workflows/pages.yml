@@ -10,11 +10,60 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Make website directory
+      - name: fetch tags
+        run: git fetch --tags origin
+      - name: Copy latest to website
         run: |
           mkdir website
-          cp crosspuzzle.js sty.css favicon.ico website/
+          cp crosspuzzle.js crosspuzzle.css favicon.ico website/
           cp examples.html website/index.html
+      - name: Copy releases to website
+        run: |
+          examples=`cat examples.html`
+          start=${examples%$"<div class='main'>"*}
+          echo "$start" > website/releases.html
+          printf "<div class='main'>\n<h1>Releases</h1>\n" >> website/releases.html
+          printf "<p><a href='/crosspuzzle'>&larr; Back to usage examples</a></p>\n" >> website/releases.html
+          printf "<p>The latest version of crosspuzzle can be included on your web page by including the following in your <code>&lt;head&gt;</code>:</p>\n" >> website/releases.html
+          printf "<div style='margin:0px 40px;font-size:80%%'><code>\n" >> website/releases.html
+          next=""
+          for js_file in $(ls *.js)
+          do
+            printf "$next&lt;script type='text/javascript' src='<a href='https://mscroggs.github.io/crosspuzzle/$js_file'>https://mscroggs.github.io/crosspuzzle/$js_file</a>'&gt;&lt;/script&gt;" >> website/releases.html
+            next="<br />\n"
+          done
+          for css_file in $(ls *.css)
+          do
+            printf "$next&lt;link type='text/css' rel='stylesheet' src='<a href='https://mscroggs.github.io/crosspuzzle/$css_file'>https://mscroggs.github.io/crosspuzzle/$css_file</a>' /&gt;" >> website/releases.html
+            next="<br />\n"
+          done
+          printf "\n</code></div>\n" >> website/releases.html
+          printf "<p>Note that this version of crosspuzzle used if you in this case will automatically update to the latest version.</p>" >> website/releases.html
+          releases=""
+          for tag in $(git tag -l v*.*.*)
+          do
+            mkdir website/$tag
+            git checkout $tag
+            cp *.js *.css website/$tag
+            r="<h2>$tag</h2>\n"
+            r="$r<p>To include <a href='https://github.com/mscroggs/crosspuzzle/releases/tag/$tag'>crosspuzzle $tag</a> on your web page, include the following in your <code>&lt;head&gt;</code>:</p>\n"
+            r="$r<div style='margin:0px 40px;font-size:80%%'><code>\n"
+            next=""
+            for js_file in $(ls *.js)
+            do
+              r="$r$next&lt;script type='text/javascript' src='<a href='https://mscroggs.github.io/crosspuzzle/$tag/$js_file'>https://mscroggs.github.io/crosspuzzle/$tag/$js_file</a>'&gt;&lt;/script&gt;"
+              next="<br />\n"
+            done
+            for css_file in $(ls *.css)
+            do
+              r="$r$next&lt;link type='text/css' rel='stylesheet' src='<a href='https://mscroggs.github.io/crosspuzzle/$tag/$css_file'>https://mscroggs.github.io/crosspuzzle/$tag/$css_file</a>' /&gt;"
+              next="<br />\n"
+            done
+            r="$r\n</code></div>\n"
+            releases="$r$releases"
+          done
+          printf "$releases" >> website/releases.html
+          printf "</div>\n</body>\n</html>\n" >> website/releases.html
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
