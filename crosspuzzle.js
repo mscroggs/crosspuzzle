@@ -96,7 +96,7 @@ function crosspuzzle_start_timer(id) {
     }
 }
 function crosspuzzle_start(id) {
-    crosspuzzle_click_cell(id, crosspuzzle_clue_to_positions["cryptic21"]["a"][0][0][0], crosspuzzle_clue_to_positions["cryptic21"]["a"][0][0][1], "a");
+    crosspuzzle_click_cell(id, crosspuzzle_clue_to_positions[id]["a"][0][0][0], crosspuzzle_clue_to_positions[id]["a"][0][0][1], "a");
 }
 
 function crosspuzzle_entry_is_white(entry) {
