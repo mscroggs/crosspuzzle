@@ -50,6 +50,16 @@ function crosspuzzle_save_to_cookie(id) {
     document.cookie = "crosspuzzle_" + id + "_data=" + puzzle_data + "; expires=" + d.toUTCString() + "; path=/";
 }
 
+function crosspuzzle_delete_cookie(id) {
+    var d = new Date(Date.now());
+    var data = {
+        "entered": {},
+        "checked": {},
+    };
+    var puzzle_data = JSON.stringify(data);
+    document.cookie = "crosspuzzle_" + id + "_data=" + puzzle_data + "; expires=" + d.toUTCString() + "; path=/";
+}
+
 function crosspuzzle_load_from_cookie(id) {
     var info = null;
     var cookies = document.cookie.split("; ");
@@ -305,6 +315,7 @@ function crosspuzzle_clear_all(id) {
         }
     }
     crosspuzzle_update_cell_styling(id);
+    crosspuzzle_delete_cookie(id)
 }
 
 function crosspuzzle_check_this(id) {
