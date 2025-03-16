@@ -96,7 +96,24 @@ function crosspuzzle_start_timer(id) {
     }
 }
 function crosspuzzle_start(id) {
-    crosspuzzle_click_cell(id, crosspuzzle_clue_to_positions[id]["a"][0][0][0], crosspuzzle_clue_to_positions[id]["a"][0][0][1], "a");
+    for (var n in crosspuzzle_clue_to_positions[id]["a"]) {
+        for (var p in crosspuzzle_clue_to_positions[id]["a"][n]) {
+            var pos = crosspuzzle_clue_to_positions[id]["a"][n][p];
+            if (!(crosspuzzle_n(id, pos) in crosspuzzle_revealed[id])) {
+                crosspuzzle_click_cell(id, crosspuzzle_clue_to_positions[id]["a"][n][0][0], crosspuzzle_clue_to_positions[id]["a"][n][0][1], "a");
+                return;
+            }
+        }
+    }
+    for (var n in crosspuzzle_clue_to_positions[id]["d"]) {
+        for (var p in crosspuzzle_clue_to_positions[id]["d"][n]) {
+            var pos = crosspuzzle_clue_to_positions[id]["d"][n][p];
+            if (!(crosspuzzle_n(id, pos) in crosspuzzle_revealed[id])) {
+                crosspuzzle_click_cell(id, crosspuzzle_clue_to_positions[id]["d"][n][0][0], crosspuzzle_clue_to_positions[id]["d"][n][0][1], "d");
+                return;
+            }
+        }
+    }
 }
 
 function crosspuzzle_entry_is_white(entry) {
