@@ -478,6 +478,19 @@ function crosspuzzle(data) {
         }
     }
 
+    var len1clues = {"a": [], "d": []}
+    if ("length_1_clues" in data) {
+        for (var i = 0; i < data["length_1_clues"].length; i++) {
+            var cl = data["length_1_clues"][i];
+            if (cl[1] == "across" || cl[1] == "both") {
+                len1clues["a"][len1clues["a"].length] = crosspuzzle_n(id, cl[0]);
+            }
+            if (cl[1] == "down" || cl[1] == "both") {
+                len1clues["d"][len1clues["d"].length] = crosspuzzle_n(id, cl[0]);
+            }
+        }
+    }
+
     var input_added = false;
 
     content += "<style type='text/css'>\n";
@@ -524,7 +537,15 @@ function crosspuzzle(data) {
         }
         for (var col = 0; col < crosspuzzle_sizes[id][1]; col++) {
             var increase = false;
-            if(crosspuzzle_entry_is_white(g[row][col]) && (col == 0 || !crosspuzzle_entry_is_white(g[row][col-1])) && col + 1 < crosspuzzle_sizes[id][1] && crosspuzzle_entry_is_white(g[row][col + 1])) {
+            if (
+                crosspuzzle_entry_is_white(g[row][col]) && (
+                    len1clues["a"].includes(crosspuzzle_n(id, [row, col])) || (
+                        (col == 0 || !crosspuzzle_entry_is_white(g[row][col-1]))
+                        && col + 1 < crosspuzzle_sizes[id][1]
+                        && crosspuzzle_entry_is_white(g[row][col + 1])
+                    )
+                )
+            ) {
                 if (data["clues"]["across"][aindex] == ":HIDDEN") {
                     ahidden++;
                 } else {
@@ -545,7 +566,15 @@ function crosspuzzle(data) {
                 }
                 aindex++;
             }
-            if(crosspuzzle_entry_is_white(g[row][col]) && (row == 0 || !crosspuzzle_entry_is_white(g[row-1][col])) && row + 1 < crosspuzzle_sizes[id][0] && crosspuzzle_entry_is_white(g[row+1][col])) {
+            if(
+                crosspuzzle_entry_is_white(g[row][col]) && (
+                    len1clues["d"].includes(crosspuzzle_n(id, [row, col])) || (
+                        (row == 0 || !crosspuzzle_entry_is_white(g[row-1][col]))
+                        && row + 1 < crosspuzzle_sizes[id][0]
+                        && crosspuzzle_entry_is_white(g[row+1][col])
+                    )
+                )
+            ) {
                 if (data["clues"]["down"][dindex] == ":HIDDEN") {
                     dhidden++;
                 } else {
