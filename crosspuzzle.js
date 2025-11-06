@@ -181,8 +181,8 @@ function crosspuzzle_update_cell_styling(id) {
         var cell = crosspuzzle_get_cell(id, crosspuzzle_all_white_cells[id][i]);
         cell.className = "crosspuzzle-cell crosspuzzle-cell-white";
     }
-    for (var dn = 0; dn < 2; dn++) {
-        var d = ["a", "d"][dn];
+    for (var dn = 0; dn < 3; dn++) {
+        var d = ["a", "d", "s"][dn];
         for (var i in crosspuzzle_clue_to_positions[id][d]) {
             var clue_n = document.getElementById("crosspuzzle-" + id + "-clue-n-" + d + i);
             clue_n.className = "crosspuzzle-clue-n";
@@ -262,10 +262,25 @@ function crosspuzzle_click_cell(id, row, col, direction) {
         crosspuzzle_active_cell = [id, [null, null], "a"];
     }
     if (crosspuzzle_active_cell[1][0] == row && crosspuzzle_active_cell[1][1] == col) {
-        if (crosspuzzle_active_cell[2] == "a" && "d" in crosspuzzle_n_to_clue[id][crosspuzzle_n(id, [row, col])]) {
-            crosspuzzle_active_cell[2] = "d";
-        } else if (crosspuzzle_active_cell[2] == "d" && "a" in crosspuzzle_n_to_clue[id][crosspuzzle_n(id, [row, col])]) {
-            crosspuzzle_active_cell[2] = "a";
+        var ntc = crosspuzzle_n_to_clue[id][crosspuzzle_n(id, [row, col])];
+        if (crosspuzzle_active_cell[2] == "a") {
+            if ("d" in ntc) {
+                crosspuzzle_active_cell[2] = "d";
+            } else if ("s" in ntc) {
+                crosspuzzle_active_cell[2] = "s";
+            }
+        } else if (crosspuzzle_active_cell[2] == "d") {
+            if ("s" in ntc) {
+                crosspuzzle_active_cell[2] = "s";
+            } else if ("a" in ntc) {
+                crosspuzzle_active_cell[2] = "a";
+            }
+        } else if (crosspuzzle_active_cell[2] == "s") {
+            if ("a" in ntc) {
+                crosspuzzle_active_cell[2] = "a";
+            } else if ("d" in ntc) {
+                crosspuzzle_active_cell[2] = "d";
+            }
         }
     } else {
         if (crosspuzzle_active_cell[2] == "s" && !("s" in crosspuzzle_n_to_clue[id][crosspuzzle_n(id, [row, col])])) {
@@ -498,6 +513,10 @@ function crosspuzzle(data) {
     content += "Congratulations! You solved the puzzle!<br /><br /><span id='crosspuzzle-" + id + "-congratulations-more-info'></span>"
     content += "<a href='javascript:crosspuzzle_hide_congrats(\"" + id + "\")'>View solution</a>"
     content += "</div>"
+    var aindex = 0;
+    var dindex = 0;
+    var ahidden = 0;
+    var dhidden = 0;
     for (var row = 0; row < crosspuzzle_sizes[id][0]; row++) {
         if (g[row].length != crosspuzzle_sizes[id][1]) {
             c.innerHTML = "<span style='color:red'>Error: grid rows non-equal lengths</span>";
@@ -506,38 +525,48 @@ function crosspuzzle(data) {
         for (var col = 0; col < crosspuzzle_sizes[id][1]; col++) {
             var increase = false;
             if(crosspuzzle_entry_is_white(g[row][col]) && (col == 0 || !crosspuzzle_entry_is_white(g[row][col-1])) && col + 1 < crosspuzzle_sizes[id][1] && crosspuzzle_entry_is_white(g[row][col + 1])) {
-                crosspuzzle_clue_to_positions[id]["a"][astarts.length] = [];
-                var len = 0;
-                while (col + len < crosspuzzle_sizes[id][1] && crosspuzzle_entry_is_white(g[row][col + len])) {
-                    var n = crosspuzzle_n(id, [row, col + len]);
-                    if(!(n in crosspuzzle_n_to_clue[id])){
-                        crosspuzzle_n_to_clue[id][n] = {};
+                if (data["clues"]["across"][aindex] == ":HIDDEN") {
+                    ahidden++;
+                } else {
+                    crosspuzzle_clue_to_positions[id]["a"][astarts.length] = [];
+                    var len = 0;
+                    while (col + len < crosspuzzle_sizes[id][1] && crosspuzzle_entry_is_white(g[row][col + len])) {
+                        var n = crosspuzzle_n(id, [row, col + len]);
+                        if(!(n in crosspuzzle_n_to_clue[id])){
+                            crosspuzzle_n_to_clue[id][n] = {};
+                        }
+                        crosspuzzle_n_to_clue[id][n]["a"] = astarts.length;
+                        crosspuzzle_clue_to_positions[id]["a"][astarts.length][len] = [row, col + len];
+                        len++;
                     }
-                    crosspuzzle_n_to_clue[id][n]["a"] = astarts.length;
-                    crosspuzzle_clue_to_positions[id]["a"][astarts.length][len] = [row, col + len];
-                    len++;
+                    astarts[astarts.length] = clue_n;
+                    alens[alens.length] = len;
+                    increase = true;
                 }
-                astarts[astarts.length] = clue_n;
-                alens[alens.length] = len;
-                increase = true;
+                aindex++;
             }
             if(crosspuzzle_entry_is_white(g[row][col]) && (row == 0 || !crosspuzzle_entry_is_white(g[row-1][col])) && row + 1 < crosspuzzle_sizes[id][0] && crosspuzzle_entry_is_white(g[row+1][col])) {
-                crosspuzzle_clue_to_positions[id]["d"][dstarts.length] = [];
-                var len = 0;
-                while (row + len < crosspuzzle_sizes[id][0] && crosspuzzle_entry_is_white(g[row + len][col])) {
-                    var n = crosspuzzle_n(id, [row + len, col]);
-                    if(!(n in crosspuzzle_n_to_clue[id])){
-                        crosspuzzle_n_to_clue[id][n] = {};
+                if (data["clues"]["down"][dindex] == ":HIDDEN") {
+                    dhidden++;
+                } else {
+                    crosspuzzle_clue_to_positions[id]["d"][dstarts.length] = [];
+                    var len = 0;
+                    while (row + len < crosspuzzle_sizes[id][0] && crosspuzzle_entry_is_white(g[row + len][col])) {
+                        var n = crosspuzzle_n(id, [row + len, col]);
+                        if(!(n in crosspuzzle_n_to_clue[id])){
+                            crosspuzzle_n_to_clue[id][n] = {};
+                        }
+                        crosspuzzle_n_to_clue[id][n]["d"] = dstarts.length;
+                        crosspuzzle_clue_to_positions[id]["d"][dstarts.length][len] = [row + len, col];
+                        len++;
                     }
-                    crosspuzzle_n_to_clue[id][n]["d"] = dstarts.length;
-                    crosspuzzle_clue_to_positions[id]["d"][dstarts.length][len] = [row + len, col];
-                    len++;
+                    dstarts[dstarts.length] = clue_n;
+                    dlens[dlens.length] = len;
+                    increase = true;
                 }
-                dstarts[dstarts.length] = clue_n;
-                dlens[dlens.length] = len;
-                increase = true;
+                dindex++;
             }
-            if(crosspuzzle_entry_is_white(g[row][col]) && "snaking" in data["clues"]) {
+            if(crosspuzzle_entry_is_white(g[row][col]) && crosspuzzle_settings[id]["has_snaking"]) {
                 for (var i = 0; i < data["clues"]["snaking"].length; i++) {
                     if (row == data["clues"]["snaking"][i][1][0][0] && col == data["clues"]["snaking"][i][1][0][1]) {
                         if(!(n in crosspuzzle_n_to_clue[id])){
@@ -691,11 +720,11 @@ function crosspuzzle(data) {
         c.innerHTML = "<span style='color:red'>Error: no down clues</span>";
         return;
     }
-    if (data["clues"]["across"].length != crosspuzzle_clue_to_positions[id]["a"].length) {
+    if (data["clues"]["across"].length != crosspuzzle_clue_to_positions[id]["a"].length + ahidden) {
         c.innerHTML = "<span style='color:red'>Error: not enough across clues</span>";
         return;
     }
-    if (data["clues"]["down"].length != crosspuzzle_clue_to_positions[id]["d"].length) {
+    if (data["clues"]["down"].length != crosspuzzle_clue_to_positions[id]["d"].length + dhidden) {
         c.innerHTML = "<span style='color:red'>Error: not enough down clues</span>";
         return;
     }
@@ -727,70 +756,72 @@ function crosspuzzle(data) {
     content += "<div class='crosspuzzle-across' style='";
     content += "display:grid;grid-template-columns:" + nwidth + " 1fr " + lenwidth + ";grid-teplate_rows:repeat(" + (astarts.length + 1) + ", auto)'>";
     content += "<div class='crosspuzzle-clue-title' style='grid-column:1 / span 3;grid-row:1 / span 1'>Across</div>";
+    var aindex = 0;
     for (var i in data["clues"]["across"]) {
         var clue_text = data["clues"]["across"][i];
-        var pos = crosspuzzle_clue_to_positions[id]["a"][i][0];
+        if (clue_text == ":HIDDEN") {
+            continue;
+        }
+
+        var pos = crosspuzzle_clue_to_positions[id]["a"][aindex][0];
         var href = "href='javascript:crosspuzzle_click_cell(\"" + id + "\", " + pos[0] + ", " + pos[1] + ", \"a\")'"
-        content += "<a " + href + " class='crosspuzzle-clue-n' id='crosspuzzle-" + id + "-clue-n-a" + i + "' style='grid-column:1 / span 1;grid-row:" + (i + 2) + " / span 1'>";
-        if (clue_text != ":HIDDEN") {
-            if ("clue_numbers" in data) {
-                content += data["clue_numbers"]["across"][i];
-            } else {
-                content += astarts[i];
-            }
+        content += "<a " + href + " class='crosspuzzle-clue-n' id='crosspuzzle-" + id + "-clue-n-a" + aindex + "' style='grid-column:1 / span 1;grid-row:" + (aindex + 2) + " / span 1'>";
+        if ("clue_numbers" in data) {
+            content += data["clue_numbers"]["across"][i];
+        } else {
+            content += astarts[aindex];
         }
         content += "</a>";
-        content += "<a " + href + " class='crosspuzzle-clue-text' id='crosspuzzle-" + id + "-clue-text-a" + i + "' style='grid-column:2 / span 1;grid-row:" + (i + 2) + " / span 1'>";
+        content += "<a " + href + " class='crosspuzzle-clue-text' id='crosspuzzle-" + id + "-clue-text-a" + aindex + "' style='grid-column:2 / span 1;grid-row:" + (aindex + 2) + " / span 1'>";
         if (clue_text != ":HIDDEN") {
             content += clue_text;
         }
         content += "</a>";
-        content += "<a " + href + " class='crosspuzzle-clue-len' id='crosspuzzle-" + id + "-clue-len-a" + i + "' style='grid-column:3 / span 1;grid-row:" + (i + 2) + " / span 1'>";
-        if (clue_text != ":HIDDEN") {
-            if ("clue_lengths" in data && "across" in data["clue_lengths"] && i in data["clue_lengths"]["across"]) {
-                content += "(" + data["clue_lengths"]["across"][i] + ")";
-            } else {
-                content += "(" + alens[i] + ")";
-            }
+        content += "<a " + href + " class='crosspuzzle-clue-len' id='crosspuzzle-" + id + "-clue-len-a" + aindex + "' style='grid-column:3 / span 1;grid-row:" + (aindex + 2) + " / span 1'>";
+        if ("clue_lengths" in data && "across" in data["clue_lengths"] && i in data["clue_lengths"]["across"]) {
+            content += "(" + data["clue_lengths"]["across"][i] + ")";
+        } else {
+            content += "(" + alens[aindex] + ")";
         }
         content += "</a>";
+        aindex++;
     }
     content += "</div>";
 
     content += "<div class='crosspuzzle-down' style='";
     content += "display:grid;grid-template-columns:" + nwidth + " 1fr " + lenwidth + ";grid-teplate_rows:repeat(" + (dstarts.length + 1) + ", auto)'>";
     content += "<div class='crosspuzzle-clue-title' style='grid-column:1 / span 3;grid-row:1 / span 1'>Down</div>";
+    var dindex = 0;
     for (var i in data["clues"]["down"]) {
         var clue_text = data["clues"]["down"][i];
-        var pos = crosspuzzle_clue_to_positions[id]["d"][i][0];
+        if (clue_text == ":HIDDEN") {
+            continue;
+        }
+
+        var pos = crosspuzzle_clue_to_positions[id]["d"][dindex][0];
         var href = "href='javascript:crosspuzzle_click_cell(\"" + id + "\", " + pos[0] + ", " + pos[1] + ", \"d\")'"
-        content += "<a " + href + " class='crosspuzzle-clue-n' id='crosspuzzle-" + id + "-clue-n-d" + i + "' style='grid-column:1 / span 1;grid-row:" + (i + 2) + " / span 1'>";
-        if (clue_text != ":HIDDEN") {
-            if ("clue_numbers" in data) {
-                content += data["clue_numbers"]["down"][i];
-            } else {
-                content += dstarts[i];
-            }
+        content += "<a " + href + " class='crosspuzzle-clue-n' id='crosspuzzle-" + id + "-clue-n-d" + dindex + "' style='grid-column:1 / span 1;grid-row:" + (dindex + 2) + " / span 1'>";
+        if ("clue_numbers" in data) {
+            content += data["clue_numbers"]["down"][i];
+        } else {
+            content += dstarts[dindex];
         }
         content += "</a>";
-        content += "<a " + href + " class='crosspuzzle-clue-text' id='crosspuzzle-" + id + "-clue-text-d" + i + "' style='grid-column:2 / span 1;grid-row:" + (i + 2) + " / span 1'>";
-        if (clue_text != ":HIDDEN") {
-            content += clue_text;
+        content += "<a " + href + " class='crosspuzzle-clue-text' id='crosspuzzle-" + id + "-clue-text-d" + dindex + "' style='grid-column:2 / span 1;grid-row:" + (dindex + 2) + " / span 1'>";
+        content += clue_text;
+        content += "</a>";
+        content += "<a " + href + " class='crosspuzzle-clue-len' id='crosspuzzle-" + id + "-clue-len-d" + dindex + "' style='grid-column:3 / span 1;grid-row:" + (dindex + 2) + " / span 1'>";
+        if ("clue_lengths" in data && "down" in data["clue_lengths"] && i in data["clue_lengths"]["down"]) {
+            content += "(" + data["clue_lengths"]["down"][i] + ")";
+        } else {
+            content += "(" + dlens[dindex] + ")";
         }
         content += "</a>";
-        content += "<a " + href + " class='crosspuzzle-clue-len' id='crosspuzzle-" + id + "-clue-len-d" + i + "' style='grid-column:3 / span 1;grid-row:" + (i + 2) + " / span 1'>";
-        if (clue_text != ":HIDDEN") {
-            if ("clue_lengths" in data && "down" in data["clue_lengths"] && i in data["clue_lengths"]["down"]) {
-                content += "(" + data["clue_lengths"]["down"][i] + ")";
-            } else {
-                content += "(" + dlens[i] + ")";
-            }
-        }
-        content += "</a>";
+        dindex++;
     }
     content += "</div>";
 
-    if ("snaking" in data["clues"]) {
+    if (crosspuzzle_settings[id]["has_snaking"]) {
         content += "<div class='crosspuzzle-snaking' style='";
         content += "display:grid;grid-template-columns:" + nwidth + " 1fr " + lenwidth + ";grid-teplate_rows:repeat(" + (dstarts.length + 1) + ", auto)'>";
         content += "<div class='crosspuzzle-clue-title' style='grid-column:1 / span 3;grid-row:1 / span 1'>Snaking</div>";
@@ -799,26 +830,20 @@ function crosspuzzle(data) {
             var pos = crosspuzzle_clue_to_positions[id]["s"][i][0];
             var href = "href='javascript:crosspuzzle_click_cell(\"" + id + "\", " + pos[0] + ", " + pos[1] + ", \"s\")'"
             content += "<a " + href + " class='crosspuzzle-clue-n' id='crosspuzzle-" + id + "-clue-n-s" + i + "' style='grid-column:1 / span 1;grid-row:" + (i + 2) + " / span 1'>";
-            if (clue_text != ":HIDDEN") {
-                if ("clue_numbers" in data) {
-                    content += data["clue_numbers"]["snaking"][i];
-                } else {
-                    content += sstarts[i];
-                }
+            if ("clue_numbers" in data) {
+                content += data["clue_numbers"]["snaking"][i];
+            } else {
+                content += sstarts[i];
             }
             content += "</a>";
             content += "<a " + href + " class='crosspuzzle-clue-text' id='crosspuzzle-" + id + "-clue-text-s" + i + "' style='grid-column:2 / span 1;grid-row:" + (i + 2) + " / span 1'>";
-            if (clue_text != ":HIDDEN") {
-                content += clue_text;
-            }
+            content += clue_text;
             content += "</a>";
             content += "<a " + href + " class='crosspuzzle-clue-len' id='crosspuzzle-" + id + "-clue-len-s" + i + "' style='grid-column:3 / span 1;grid-row:" + (i + 2) + " / span 1'>";
-            if (clue_text != ":HIDDEN") {
-                if ("clue_lengths" in data && "snaking" in data["clue_lengths"] && i in data["clue_lengths"]["snaking"]) {
-                    content += "(" + data["clue_lengths"]["snaking"][i] + ")";
-                } else {
-                    content += "(" + slens[i] + ")";
-                }
+            if ("clue_lengths" in data && "snaking" in data["clue_lengths"] && i in data["clue_lengths"]["snaking"]) {
+                content += "(" + data["clue_lengths"]["snaking"][i] + ")";
+            } else {
+                content += "(" + slens[i] + ")";
             }
             content += "</a>";
         }
