@@ -1,5 +1,5 @@
 <!------------------------------------->
-<!-- Crosspuzzle v1.0.0              -->
+<!-- Crosspuzzle v1.1.0              -->
 <!-- Demo puzzles                    -->
 <!--                                 -->
 <!-- Created by Matthew Scroggs      -->
@@ -58,8 +58,8 @@ td {
 }
 </style>
 <link rel='icon' type='image/x-icon' href='favicon.ico' />
-<link rel='stylesheet' type='text/css' href='crosspuzzle.css?v=1.0.0' />
-<script type='text/javascript' src='crosspuzzle.js?v=1.0.0'></script>
+<link rel='stylesheet' type='text/css' href='crosspuzzle.css?v=1.1.0' />
+<script type='text/javascript' src='crosspuzzle.js?v=1.1.0'></script>
 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
 </head>
 <body>
@@ -129,6 +129,26 @@ crosspuzzle({
 })
 </script>
 
+<h3>Snaking</h3>
+<p>This example is a puzzle with a snaking clue.</p>
+<div id='snaking'></div>
+<script type='text/javascript'>
+crosspuzzle({
+    "id": "snaking",
+    "grid": ["*ERA", "EAST"],
+    "clues": {"across": ["An age.", "A direction."],
+              "down": [":HIDDEN", ":HIDDEN", "Thanks."],
+              "snaking": [["Twinkle twinkle little ____.", [[1, 2], [1, 3], [0, 3], [0, 2]]]]},
+    "clue_number_width": "60px",
+    "clue_numbers": {"across": ["1", "3"], "down": ["", "", "2"], "snaking": ["4"]},
+    "custom_numbering": [
+        ["", "1", "", "2"],
+        ["3", "", "4", ""],
+    ],
+    "show_reveal_button": false
+})
+</script>
+
 <h2>How these puzzle widgets are generated</h2>
 <p>All of the above puzzle widgets were created using the <a href='https://github.com/mscroggs/crosspuzzle'>crosspuzzle</a>
 Javascript library, written by <a href='https://mscroggs.co.uk'>Matthew Scroggs</a>.
@@ -144,8 +164,8 @@ In the <code>&lt;head&gt;</code> part of the html file, we include crosspuzzle.j
 </code></div>
 <p>Or you can load the latest release of crosspuzzle directly from GitHub pages:</p>
 <div style='margin:0px 40px'><code>
-&lt;script type='text/javascript' src='https://mscroggs.github.io/crosspuzzle/v1.0.0/crosspuzzle.js'&gt;&lt;/script&gt;<br />
-&lt;link type='text/css' rel='stylesheet' src='https://mscroggs.github.io/crosspuzzle/v1.0.0/crosspuzzle.css' /&gt;
+&lt;script type='text/javascript' src='https://mscroggs.github.io/crosspuzzle/v1.1.0/crosspuzzle.js'&gt;&lt;/script&gt;<br />
+&lt;link type='text/css' rel='stylesheet' src='https://mscroggs.github.io/crosspuzzle/v1.1.0/crosspuzzle.css' /&gt;
 </code></div>
 
 <p>Details of how to include any release of crosspuzzle can be found at <a href='https://mscroggs.github.io/crosspuzzle/releases'>mscroggs.github.io/crosspuzzle/releases</a></p>

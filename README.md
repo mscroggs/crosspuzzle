@@ -22,8 +22,8 @@ Alternatively, you can load the latest version of these files directly from GitH
 Or you can load the latest release of crosspuzzle directly from GitHub pages:
 
 ```html
-<script type='text/javascript' src='https://mscroggs.github.io/crosspuzzle/v1.0.0/crosspuzzle.js'></script>
-<link type='text/css' rel='stylesheet' src='https://mscroggs.github.io/crosspuzzle/v1.0.0/crosspuzzle.css' />
+<script type='text/javascript' src='https://mscroggs.github.io/crosspuzzle/v1.1.0/crosspuzzle.js'></script>
+<link type='text/css' rel='stylesheet' src='https://mscroggs.github.io/crosspuzzle/v1.1.0/crosspuzzle.css' />
 ```
 
 Details of how to include any release of crosspuzzle can be found at [mscroggs.github.io/crosspuzzle/releases](https://mscroggs.github.io/crosspuzzle/releases)
