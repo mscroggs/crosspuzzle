@@ -603,6 +603,9 @@ function crosspuzzle(data) {
                         }
                         for (var j = 0; j < data["clues"]["snaking"][i][1].length; j++) {
                             var n = crosspuzzle_n(id, data["clues"]["snaking"][i][1][j]);
+                            if(!(n in crosspuzzle_n_to_clue[id])){
+                                crosspuzzle_n_to_clue[id][n] = {};
+                            }
                             crosspuzzle_n_to_clue[id][n]["s"] = sstarts.length;
                         }
                         crosspuzzle_clue_to_positions[id]["s"][sstarts.length] = data["clues"]["snaking"][i][1];
@@ -750,11 +753,11 @@ function crosspuzzle(data) {
         return;
     }
     if (data["clues"]["across"].length != crosspuzzle_clue_to_positions[id]["a"].length + ahidden) {
-        c.innerHTML = "<span style='color:red'>Error: not enough across clues</span>";
+        c.innerHTML = "<span style='color:red'>Error: incorrect number of across clues (expected " + data["clues"]["across"].length + ", found " + (crosspuzzle_clue_to_positions[id]["a"].length + ahidden) + ")</span>";
         return;
     }
     if (data["clues"]["down"].length != crosspuzzle_clue_to_positions[id]["d"].length + dhidden) {
-        c.innerHTML = "<span style='color:red'>Error: not enough down clues</span>";
+        c.innerHTML = "<span style='color:red'>Error: incorrect number of down clues (expected " + data["clues"]["down"].length + ", found " + (crosspuzzle_clue_to_positions[id]["d"].length + dhidden) + ")</span>";
         return;
     }
     if ("clue_numbers" in data) {
