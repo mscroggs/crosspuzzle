@@ -21,6 +21,8 @@ var crosspuzzle_settings = {}
 var crosspuzzle_input_version2 = true;
 var crosspuzzle_start_time = {}
 var crosspuzzle_end_time = {}
+var crosspuzzle_hbars = {};
+var crosspuzzle_vbars = {};
 
 function crosspuzzle_is_white(id, entry) {
     for (var i in crosspuzzle_all_white_cells[id]) {
@@ -222,6 +224,17 @@ function crosspuzzle_update_cell_styling(id) {
         document.getElementById("crosspuzzle-" + id + "-active-clue").innerHTML = "&nbsp;";
     }
 
+    for (var row = 0; row < crosspuzzle_sizes[id][0]; row++) {
+        for (var col = 0; col < crosspuzzle_sizes[id][1]; col++) {
+            var cell = crosspuzzle_get_cell(id, [row, col]);
+            if (crosspuzzle_hbars[id][row].includes(col + 1)) {
+                cell.className += " crosspuzzle-cell-bar-right";
+            }
+            if (crosspuzzle_vbars[id][col].includes(row + 1)) {
+                cell.className += " crosspuzzle-cell-bar-bottom";
+            }
+        }
+    }
     var remove = []
     for (var i in crosspuzzle_checked[id]) {
         var pos = crosspuzzle_solution[id][i][0];
@@ -526,6 +539,29 @@ function crosspuzzle(data) {
     content += "Congratulations! You solved the puzzle!<br /><br /><span id='crosspuzzle-" + id + "-congratulations-more-info'></span>"
     content += "<a href='javascript:crosspuzzle_hide_congrats(\"" + id + "\")'>View solution</a>"
     content += "</div>"
+
+    var vbars = [];
+    for (var row = 0; row < crosspuzzle_sizes[id][0]; row++) {
+        vbars[vbars.length] = [];
+    }
+    if ("bars" in data && "vertical" in data["bars"]) {
+        for (var i = 0; i < data["bars"]["vertical"].length; i++) {
+            vbars[data["bars"]["vertical"][i][0]][vbars[data["bars"]["vertical"][i][0]].length] = data["bars"]["vertical"][i][1]
+        }
+    }
+    crosspuzzle_vbars[id] = vbars;
+
+    var hbars = [];
+    for (var col = 0; col < crosspuzzle_sizes[id][1]; col++) {
+        hbars[hbars.length] = [];
+    }
+    if ("bars" in data && "horizontal" in data["bars"]) {
+        for (var i = 0; i < data["bars"]["horizontal"].length; i++) {
+            hbars[data["bars"]["horizontal"][i][0]][hbars[data["bars"]["horizontal"][i][0]].length] = data["bars"]["horizontal"][i][1]
+        }
+    }
+    crosspuzzle_hbars[id] = hbars;
+
     var aindex = 0;
     var dindex = 0;
     var ahidden = 0;
@@ -540,9 +576,10 @@ function crosspuzzle(data) {
             if (
                 crosspuzzle_entry_is_white(g[row][col]) && (
                     len1clues["a"].includes(crosspuzzle_n(id, [row, col])) || (
-                        (col == 0 || !crosspuzzle_entry_is_white(g[row][col-1]))
+                        (col == 0 || !crosspuzzle_entry_is_white(g[row][col-1]) || vbars[row].includes(col))
                         && col + 1 < crosspuzzle_sizes[id][1]
                         && crosspuzzle_entry_is_white(g[row][col + 1])
+                        && !vbars[row].includes(col + 1)
                     )
                 )
             ) {
@@ -551,7 +588,7 @@ function crosspuzzle(data) {
                 } else {
                     crosspuzzle_clue_to_positions[id]["a"][astarts.length] = [];
                     var len = 0;
-                    while (col + len < crosspuzzle_sizes[id][1] && crosspuzzle_entry_is_white(g[row][col + len])) {
+                    while (col + len < crosspuzzle_sizes[id][1] && crosspuzzle_entry_is_white(g[row][col + len]) && (len == 0 || !vbars[row].includes(col + len))) {
                         var n = crosspuzzle_n(id, [row, col + len]);
                         if(!(n in crosspuzzle_n_to_clue[id])){
                             crosspuzzle_n_to_clue[id][n] = {};
@@ -569,9 +606,10 @@ function crosspuzzle(data) {
             if(
                 crosspuzzle_entry_is_white(g[row][col]) && (
                     len1clues["d"].includes(crosspuzzle_n(id, [row, col])) || (
-                        (row == 0 || !crosspuzzle_entry_is_white(g[row-1][col]))
+                        (row == 0 || !crosspuzzle_entry_is_white(g[row-1][col]) || hbars[col].includes(row))
                         && row + 1 < crosspuzzle_sizes[id][0]
                         && crosspuzzle_entry_is_white(g[row+1][col])
+                        && !hbars[col].includes(row + 1)
                     )
                 )
             ) {
@@ -580,7 +618,7 @@ function crosspuzzle(data) {
                 } else {
                     crosspuzzle_clue_to_positions[id]["d"][dstarts.length] = [];
                     var len = 0;
-                    while (row + len < crosspuzzle_sizes[id][0] && crosspuzzle_entry_is_white(g[row + len][col])) {
+                    while (row + len < crosspuzzle_sizes[id][0] && crosspuzzle_entry_is_white(g[row + len][col]) && (len == 0 || !hbars[col].includes(row + len))) {
                         var n = crosspuzzle_n(id, [row + len, col]);
                         if(!(n in crosspuzzle_n_to_clue[id])){
                             crosspuzzle_n_to_clue[id][n] = {};
@@ -1013,7 +1051,7 @@ function crosspuzzle_process_key(id, key_code) {
                 }
                 var active_clue = crosspuzzle_n_to_clue[id][crosspuzzle_n(id, crosspuzzle_active_cell[1])][crosspuzzle_active_cell[2]];
                 if (crosspuzzle_active_cell[2] == "a") {
-                    if (crosspuzzle_is_white(id, [crosspuzzle_active_cell[1][0], crosspuzzle_active_cell[1][1] + 1])) {
+                    if (crosspuzzle_is_white(id, [crosspuzzle_active_cell[1][0], crosspuzzle_active_cell[1][1] + 1]) && !crosspuzzle_hbars[id][crosspuzzle_active_cell[1][0]].includes(crosspuzzle_active_cell[1][1] + 1)) {
                         crosspuzzle_active_cell[1][1] += 1;
                     } else {
                         if (active_clue + 1 < crosspuzzle_clue_to_positions[id]["a"].length) {
@@ -1026,7 +1064,7 @@ function crosspuzzle_process_key(id, key_code) {
                         }
                     }
                 } else if (crosspuzzle_active_cell[2] == "d") {
-                    if (crosspuzzle_is_white(id, [crosspuzzle_active_cell[1][0] + 1, crosspuzzle_active_cell[1][1]])) {
+                    if (crosspuzzle_is_white(id, [crosspuzzle_active_cell[1][0] + 1, crosspuzzle_active_cell[1][1]]) && !crosspuzzle_vbars[id][crosspuzzle_active_cell[1][1]].includes(crosspuzzle_active_cell[1][0] + 1)) {
                         crosspuzzle_active_cell[1][0] += 1;
                     } else {
                         if (active_clue + 1 < crosspuzzle_clue_to_positions[id]["d"].length) {

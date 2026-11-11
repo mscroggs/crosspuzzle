@@ -93,6 +93,22 @@ a.crosspuzzle-cell {
     background-color:black;
 }
 
+.crosspuzzle-cell.crosspuzzle-cell-bar-left {
+    border-left:4px solid black;
+}
+
+.crosspuzzle-cell.crosspuzzle-cell-bar-right {
+    border-right:4px solid black;
+}
+
+.crosspuzzle-cell.crosspuzzle-cell-bar-top {
+    border-top:4px solid black;
+}
+
+.crosspuzzle-cell.crosspuzzle-cell-bar-bottom {
+    border-bottom:4px solid black;
+}
+
 .crosspuzzle-cell.crosspuzzle-cell-correct {
     color:white;
     background-color:#008000;
